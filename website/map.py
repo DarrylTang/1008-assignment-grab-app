@@ -314,6 +314,7 @@ def read_map():
 # the grabshare portion
 @map.route('/map_page_multi', methods=['GET', 'POST'])  # add url here
 def read_map_multi():
+
     coor = ""
     coor_2 = ""
 
@@ -423,7 +424,7 @@ def read_map_multi():
 
                 print(data)
 
-                return render_template("map_page.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_B,
+                return render_template("map_page_multi.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_B,
                                        lineCoord_3=path_B_D)
 
             elif path_picked == 2:
@@ -445,34 +446,12 @@ def read_map_multi():
 
                 print(data)
 
-                return render_template("map_page.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_D,
+                return render_template("map_page_multi.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_D,
                                        lineCoord_3=path_D_B)
-
-
-
-
-
-        else:
-
-            # loc is a 2D array of longitude and latitudes for pathing
-            # format: loc = [[sl_x, sl_y], [el_x, el_y]]
-            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)
-            print(loc)
-
-            # taking the geo points on produced and sending it to the map in map_page
-            data.update(
-                {
-                    'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y
-                }
-            )
-
-            # print(data)
-
-            return render_template("map_page.html", data=data, lineCoord=loc)
 
         # runs on default, GET
         # data here requires default values or it will crash
-    return render_template("map_page.html", data=data)
+    return render_template("map_page_multi.html", data=data)
   
     
 

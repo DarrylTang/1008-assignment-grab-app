@@ -21,6 +21,15 @@
           <input type="text" class="form-control" placeholder="Destination" id="mydestination" name="mydestination">
         </div>
       </div>
+        <div class="spaces"></div>
+        <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Addtional Pickup" id="" name="">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Additional Destination" id="" name="">
+        </div>
+      </div>
       <div class="spaces"></div>
       <button type="submit" class="btn btn-primary" onclick="submitted()">Route me!</button>
     </form>
@@ -123,15 +132,15 @@
 
 
       function inner_route1() {
-        let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap);
+        L.polyline(linesData_1, {className: 'animate'}).addTo(mymap);
       }
 
       function inner_route2() {
-        let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap);
+        L.polyline(linesData_2, {className: 'animate'}).addTo(mymap);
       }
 
       function inner_route3() {
-        let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap);
+        L.polyline(linesData_3, {className: 'animate'}).addTo(mymap);
       }
 
       setInterval(inner_route1, 1000);
