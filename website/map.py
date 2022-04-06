@@ -207,7 +207,7 @@ if os.path.isfile('dataset_of_addresses'):
     infile = open(filename,'rb')
     datastore = pickle.load(infile)
     infile.close()
-    #print(datastore)
+    print(datastore)
     
 else:
     print ("File not exist")
