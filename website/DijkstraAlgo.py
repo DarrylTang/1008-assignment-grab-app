@@ -85,7 +85,9 @@ class Graph:
         for i in path:
             pathingCoords.append([self.nodesArray[i].latitude, self.nodesArray[i].longitude])
 
-        return pathingCoords
+        totalDistance = distance[destinationNode]
+
+        return pathingCoords, distance[destinationNode]
 
     def print(self):
         print(self.graph)

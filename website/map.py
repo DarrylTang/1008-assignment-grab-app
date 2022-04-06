@@ -17,11 +17,8 @@ from sqlite3 import Error
 
 from time import time, sleep
 
-
 # this defines the file as our blueprint
 map = Blueprint('map', __name__)  # easier to name it the same as ur file
-
-
 
 def getcoordinates(address):
     req = requests.get(
@@ -47,15 +44,12 @@ def findgeocoordinates(x):
             print("Its a matchhhh")
             
             return getcoordinates(datastore[i])
-            
-            
         elif (x == datastore[i]):
             print(datastore[i])
             print("------------------------------------")
             print("Its a matchhhh")
             
             return getcoordinates(x)
-        
         else:
             print("Result not found")
 
@@ -329,7 +323,7 @@ def read_map():
             #loc is a 2D array of longitude and latitudes for pathing
             #format: loc = [[sl_x, sl_y], [el_x, el_y]]
             
-            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)
+            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)[0]
             print(loc)
             
             path_picked = rideshareDistance_checker(sourceNode,destinationNode,passenger_new_pickup,passenger_new_dropoff, nodesArray)
@@ -337,9 +331,9 @@ def read_map():
             print(path_picked)
             
             if path_picked == 1:
-                path_A_C = graph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)
-                path_C_B = graph.dijkstraAlgoGetPath(passenger_new_pickup,destinationNode)
-                path_B_D = graph.dijkstraAlgoGetPath(destinationNode,passenger_new_dropoff)
+                path_A_C = graph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)[0]
+                path_C_B = graph.dijkstraAlgoGetPath(passenger_new_pickup,destinationNode)[0]
+                path_B_D = graph.dijkstraAlgoGetPath(destinationNode,passenger_new_dropoff)[0]
                 
             
             
@@ -357,9 +351,9 @@ def read_map():
                 return render_template("map_page.html", data=data, lineCoord_1=path_A_C , lineCoord_2=path_C_B , lineCoord_3=path_B_D)
             
             elif path_picked == 2:
-                path_A_C = graph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)
-                path_C_D = graph.dijkstraAlgoGetPath(passenger_new_pickup,passenger_new_dropoff)
-                path_D_B = graph.dijkstraAlgoGetPath(passenger_new_dropoff,destinationNode)
+                path_A_C = graph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)[0]
+                path_C_D = graph.dijkstraAlgoGetPath(passenger_new_pickup,passenger_new_dropoff)[0]
+                path_D_B = graph.dijkstraAlgoGetPath(passenger_new_dropoff,destinationNode)[0]
         
                 new_loc = path_A_C + path_C_D + path_D_B
                 
@@ -384,7 +378,7 @@ def read_map():
 
             #loc is a 2D array of longitude and latitudes for pathing
             #format: loc = [[sl_x, sl_y], [el_x, el_y]]
-            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)
+            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)[0]
             print(loc)
 
             # taking the geo points on produced and sending it to the map in map_page
