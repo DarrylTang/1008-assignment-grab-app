@@ -18,7 +18,10 @@
           <input type="text" class="form-control" placeholder="Pickup location" id="myLocation" name="myLocation">
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Destination" id="mydestination" name="mydestination">
+          <input type="text" class="form-control" placeholder="Destination" id="mydestination" name="mydestination" aria-describedby="warningBlock">
+            <div id="warningBlock" class="form-text">
+              Please input a location in postal code!
+            </div>
         </div>
       </div>
       <div class="spaces"></div>
@@ -38,6 +41,9 @@
   </div> -->
 
   <script>
+    let warning = document.getElementById("warningBlock");
+        warning.style.display = "none";
+
     let startx = 0;
     let starty = 0;
     let endx = 0;
@@ -70,6 +76,13 @@
         accessToken: 'pk.eyJ1IjoiZGFycnlsdGFuZyIsImEiOiJjbDB6NzJ3N3QwbXVtM2Rtb3FkNTR5OXp0In0.a1r9nITXtJiS_ys57yp0Gg'
     }).addTo(mymap);
 
+    // default values for testing
+    let latlngs = [
+      [1.43589365, 103.8007271],
+      [1.43565769, 103.8009471],
+      [1.435979454, 103.8012582]
+    ];
+
     // when user clicks on button, then do a wait, and then add the markers and lines to the map
     function loadRoutes() {
 
@@ -83,72 +96,27 @@
       console.log(starty);
       console.log(endx);
       console.log(endy);
-            
-      //this are the testing
-      startx_new = {{ data.startx_new }}
-      starty_new = {{ data.starty_new }}
-      endx_new = {{ data.endx_new }}
-      endy_new = {{ data.endy_new }}
-      
-      console.log(startx_new);
-      console.log(starty_new);
-      console.log(endx_new);
-      console.log(endy_new);
 
+      let loc = {{ lineCoord }}
 
-      let latlngs = [
-      [1.43589365, 103.8007271],
-      [1.43565769, 103.8009471],
-      [1.435979454, 103.8012582]
-      ];
+        /*
+      if (startx === null || starty === null || endx === null || endy === null || loc === null) {
+          // show dialogue that things are empty
+          warning.style.display = "block";
+      } else {
 
-      let linesData_1 = {{ lineCoord_1 }}
-          console.log(linesData_1);
-      
-      let linesData_2 = {{ lineCoord_2 }}
-          console.log(linesData_2);
+      }
+         */
 
-      let linesData_3 = {{ lineCoord_3 }}
-          console.log(linesData_3);
-      
-      
       L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
       L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
-      
+
       // zoom the map to the polyline
-      // mymap.fitBounds(polyline.getBounds());
+      //mymap.fitBounds(polyline.getBounds());
 
-      L.marker([startx_new, starty_new], {title: 'Pickup point_new'}).addTo(mymap);
-      L.marker([endx_new, endy_new], {title: 'Dropoff point_new'}).addTo(mymap);
+      L.polyline(loc, {className: 'animate'}).addTo(mymap);
 
-
-      function inner_route1() {
-        let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap);
-      }
-
-      function inner_route2() {
-        let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap);
-      }
-
-      function inner_route3() {
-        let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap);
-      }
-
-      setInterval(inner_route1, 1000);
-      setInterval(inner_route2, 5000);
-      setInterval(inner_route3, 10000);
-
-      //setInterval(let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap),3000);
-      //setInterval(let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap),3000);
-      //setInterval(let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap),3000);
-      //let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap);
-
-      //let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap);
-
-      //let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap);
     }
 
-
-  
   </script>
 {% endblock %}

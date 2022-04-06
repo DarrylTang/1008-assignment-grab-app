@@ -39,10 +39,10 @@
 
     <!-- script.js -->
     <script src="https://cdn.onemap.sg/leaflet/onemap-leaflet.js"></script>
-{#    <script#}
-{#      type="text/javascript"#}
-{#      src="{{ url_for('static', filename='index.js') }}"#}
-{#    ></script>#}
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='index.js') }}"
+    ></script>
 
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -72,47 +72,35 @@
     
     {% block head %} {% endblock %}
 
-    <title>{% block title %}Home{% endblock %}</title>
+    <title>{% block title %}Ride Hailing{% endblock %}</title>
   </head>
 
   <body>
+      
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Ride Hailing</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/map_page">Single Ride</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/map_page_multi">Ride Sharing</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">{% block content %} {% endblock %}</div>
-  
 
-  <!-- <div class="navbar" id="myNavBar">
-        <a id="home" href="/"><i class="bi bi-house"></i></a>
-        <a id="map" href="/map"><i class="bi bi-hammer"></i></a>
-        <a id="map" href="/review"><i class="bi bi-star-fill"></i></a>
-        <a id="test" href="/test"><i class="bi bi-heart"></i></a>
-{#      {% if user.is_authenticated %}#}
-{#      <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>#}
-{#      {% else %}#}
-{#      <a id="account" href="/account"><i class="bi bi-person-circle"></i></a>#}
-{#      {% endif %}#}
-    </div> -->
-
-{#    {% with messages = get_flashed_messages(with_categories=true) %} {% if#}
-{#    messages %} {% for category, message in messages %} {% if category ==#}
-{#    'error' %}#}
-{#    <div class="alert alert-danger alter-dismissable fade show" role="alert">#}
-{#      {{ message }}#}
-{#      <button type="button" class="close" data-dismiss="alert">#}
-{#        <span aria-hidden="true">&times;</span>#}
-{#      </button>#}
-{#    </div>#}
-{#    {% else %}#}
-{#    <div class="alert alert-success alter-dismissable fade show" role="alert">#}
-{#      {{ message }}#}
-{#      <button type="button" class="close" data-dismiss="alert">#}
-{#        <span aria-hidden="true">&times;</span>#}
-{#      </button>#}
-{#    </div>#}
-{#    {% endif %} {% endfor %} {% endif %} {% endwith %}#}
-
-    <!-- <div class="main">
-        <h1>Bottom Navigation Bar</h1>
-      </div> -->
-
-      {% block meat %} {% endblock %}
+    {% block meat %} {% endblock %}
   </body>
 </html>

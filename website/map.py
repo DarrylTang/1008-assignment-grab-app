@@ -57,7 +57,8 @@ def findgeocoordinates(x):
             return getcoordinates(x)
         
         else:
-            print("Result not found")
+            pass
+                #print("Result not found")
 
 def find_distance(userinput, nodesArray):
     minimum_dist = minimum = 728600
@@ -124,7 +125,7 @@ def rideshareDistance_checker(passenger_pickup,passenger_dropoff,passenger_picku
         return 1
 
 
-#database stuffu
+#database stuff
 
 def createConnection(db_file):
     conn = None
@@ -237,7 +238,7 @@ database = r"drivers.db"
 
 # instead of using folium which limits a lot of functionality and documentation sucks, the variables and arrays here will be sent to a javascript file to make 
 # use of leaflet
-@map.route('/', methods=['GET', 'POST'])  # add url here
+@map.route('/map_page', methods=['GET', 'POST'])  # add url here
 def read_map():
     
     coor = ""
@@ -248,16 +249,11 @@ def read_map():
     lineCoord = []
     
     driver_is_travelling = True
-    
-    # folium will render the map onto whatever page directly.
-    # map = folium.Map(location=[1.43589365, 103.8007271], zoom_start=16)
 
     if request.method == 'POST':
         print("executing the POST....")
-        driver_is_travelling = False
         
         # below is what is being typed in from the user.
-        
         starting_location = request.form.get('myLocation')
         ending_location = request.form.get('mydestination')
 
@@ -265,26 +261,100 @@ def read_map():
         ending_location = ending_location.strip('\r\n      ')
         starting_location= starting_location.upper()
         ending_location = ending_location.upper()
-        
+
+        # perform check to prevent code from crashing
+        if starting_location == "":
+            print('Pickup is empty')
+        elif starting_location == "":
+            print('Destination is empty')
+
+        else:
+            coor = findgeocoordinates(starting_location)
+            coor_2 = findgeocoordinates(ending_location)
+
+            print("Closest index for your starting location is " + str(find_distance(coor,nodesArray)))
+
+            print("Closest index for your ending location is " + str(find_distance(coor_2,nodesArray)))
+            sourceNode = find_distance(coor,nodesArray)
+            destinationNode = find_distance(coor_2,nodesArray)
+
+            #load the driver
+            drivers()
+
+            #pass reference of first node in the list to the graph class
+            graph = Graph(nodesArray)
+            graph.linkAllNodes()
+
+            sl_x = nodesArray[sourceNode].latitude
+            sl_y = nodesArray[sourceNode].longitude
+            el_x = nodesArray[destinationNode].latitude
+            el_y = nodesArray[destinationNode].longitude
+
+
+            #loc is a 2D array of longitude and latitudes for pathing
+            #format: loc = [[sl_x, sl_y], [el_x, el_y]]
+            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)
+            print(loc)
+
+            # taking the geo points on produced and sending it to the map in map_page
+            data.update(
+                {
+                'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y
+                }
+            )
+
+            # print(data)
+
+            return render_template("map_page.html", data=data, lineCoord=loc)
+
+        #runs on default, GET
+        # data here requires default values or it will crash
+    return render_template("map_page.html", data=data)
+
+# the grabshare portion
+@map.route('/map_page_multi', methods=['GET', 'POST'])  # add url here
+def read_map_multi():
+    coor = ""
+    coor_2 = ""
+
+    data = {'startx': 1.43589365, 'starty': 103.8007271}  # dictionary
+
+    lineCoord = []
+
+    driver_is_travelling = True
+
+    # folium will render the map onto whatever page directly.
+    # map = folium.Map(location=[1.43589365, 103.8007271], zoom_start=16)
+
+    if request.method == 'POST':
+        print("executing the POST....")
+        driver_is_travelling = False
+
+        # below is what is being typed in from the user.
+
+        starting_location = request.form.get('myLocation')
+        ending_location = request.form.get('mydestination')
+
+        starting_location = starting_location.strip('\r\n      ')
+        ending_location = ending_location.strip('\r\n      ')
+        starting_location = starting_location.upper()
+        ending_location = ending_location.upper()
+
         coor = findgeocoordinates(starting_location)
         coor_2 = findgeocoordinates(ending_location)
-        
+
         # sl_x = float(coor[0])
         # sl_y = float(coor[1])
-        print("Closest index for your starting location is " + str(find_distance(coor,nodesArray)))
-        
-        print("Closest index for your ending location is " + str(find_distance(coor_2,nodesArray)))
-        sourceNode = find_distance(coor,nodesArray)   
-        destinationNode = find_distance(coor_2,nodesArray)
+        print("Closest index for your starting location is " + str(find_distance(coor, nodesArray)))
 
-        
-        #load the driver
+        print("Closest index for your ending location is " + str(find_distance(coor_2, nodesArray)))
+        sourceNode = find_distance(coor, nodesArray)
+        destinationNode = find_distance(coor_2, nodesArray)
+
+        # load the driver
         drivers()
-        
-        
-        
-        
-        #pass reference of first node in the list to the graph class
+
+        # pass reference of first node in the list to the graph class
         graph = Graph(nodesArray)
         graph.linkAllNodes()
 
@@ -297,7 +367,7 @@ def read_map():
         #     location=[sl_x, sl_y],
         #     popup="<b>Pickup Location</b>",
         #     tooltip="Click Me!"
-        # ).add_to(map)
+        # ).add_to(map)f
 
         el_x = nodesArray[destinationNode].latitude
         el_y = nodesArray[destinationNode].longitude
@@ -308,103 +378,99 @@ def read_map():
         #     tooltip="Click Me!"
         # ).add_to(map)
 
-        
-        #Rideshare function
-        passenger_new_pickup  = ridesharePassenger_generator()
+        # Rideshare function
+        passenger_new_pickup = ridesharePassenger_generator()
         passenger_new_dropoff = ridesharePassenger_generator()
-        
-        check = ridesharePassenger_checker(sourceNode,destinationNode,passenger_new_pickup,passenger_new_dropoff, nodesArray)
-        
+
+        check = ridesharePassenger_checker(sourceNode, destinationNode, passenger_new_pickup, passenger_new_dropoff,
+                                           nodesArray)
+
         print(check)
-        
+
         if (check == True):
-            
-        
+
             passenger_new_pickup_x = nodesArray[passenger_new_pickup].latitude
             passenger_new_pickup_y = nodesArray[passenger_new_pickup].longitude
-            
+
             passenger_new_dropoff_x = nodesArray[passenger_new_dropoff].latitude
             passenger_new_dropoff_y = nodesArray[passenger_new_dropoff].longitude
-            
-            #loc is a 2D array of longitude and latitudes for pathing
-            #format: loc = [[sl_x, sl_y], [el_x, el_y]]
-            
+
+            # loc is a 2D array of longitude and latitudes for pathing
+            # format: loc = [[sl_x, sl_y], [el_x, el_y]]
+
             loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)
             print(loc)
-            
-            path_picked = rideshareDistance_checker(sourceNode,destinationNode,passenger_new_pickup,passenger_new_dropoff, nodesArray)
-            
+
+            path_picked = rideshareDistance_checker(sourceNode, destinationNode, passenger_new_pickup,
+                                                    passenger_new_dropoff, nodesArray)
+
             print(path_picked)
-            
+
             if path_picked == 1:
-                path_A_C = graph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)
-                path_C_B = graph.dijkstraAlgoGetPath(passenger_new_pickup,destinationNode)
-                path_B_D = graph.dijkstraAlgoGetPath(destinationNode,passenger_new_dropoff)
-                
-            
-            
+                path_A_C = graph.dijkstraAlgoGetPath(sourceNode, passenger_new_pickup)
+                path_C_B = graph.dijkstraAlgoGetPath(passenger_new_pickup, destinationNode)
+                path_B_D = graph.dijkstraAlgoGetPath(destinationNode, passenger_new_dropoff)
+
                 # taking the geo points on produced and sending it to the map in map_page
                 data.update(
                     {
-                    'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y,
-                    'startx_new': passenger_new_pickup_x, 'starty_new': passenger_new_pickup_y, 'endx_new': passenger_new_dropoff_x, 'endy_new': passenger_new_dropoff_y,
-                    'choice': 1
+                        'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y,
+                        'startx_new': passenger_new_pickup_x, 'starty_new': passenger_new_pickup_y,
+                        'endx_new': passenger_new_dropoff_x, 'endy_new': passenger_new_dropoff_y,
+                        'choice': 1
                     }
-                    )
+                )
 
                 print(data)
-                
-                return render_template("map_page.html", data=data, lineCoord_1=path_A_C , lineCoord_2=path_C_B , lineCoord_3=path_B_D)
-            
+
+                return render_template("map_page.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_B,
+                                       lineCoord_3=path_B_D)
+
             elif path_picked == 2:
-                path_A_C = graph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)
-                path_C_D = graph.dijkstraAlgoGetPath(passenger_new_pickup,passenger_new_dropoff)
-                path_D_B = graph.dijkstraAlgoGetPath(passenger_new_dropoff,destinationNode)
-        
+                path_A_C = graph.dijkstraAlgoGetPath(sourceNode, passenger_new_pickup)
+                path_C_D = graph.dijkstraAlgoGetPath(passenger_new_pickup, passenger_new_dropoff)
+                path_D_B = graph.dijkstraAlgoGetPath(passenger_new_dropoff, destinationNode)
+
                 new_loc = path_A_C + path_C_D + path_D_B
-                
+
                 # taking the geo points on produced and sending it to the map in map_page
                 data.update(
                     {
-                    'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y,
-                    'startx_new': passenger_new_pickup_x, 'starty_new': passenger_new_pickup_y, 'endx_new': passenger_new_dropoff_x, 'endy_new': passenger_new_dropoff_y,
-                    'choice': 2
+                        'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y,
+                        'startx_new': passenger_new_pickup_x, 'starty_new': passenger_new_pickup_y,
+                        'endx_new': passenger_new_dropoff_x, 'endy_new': passenger_new_dropoff_y,
+                        'choice': 2
                     }
-                    )
+                )
 
                 print(data)
-                
-                return render_template("map_page.html", data=data, lineCoord_1=path_A_C , lineCoord_2=path_C_D , lineCoord_3=path_D_B)
 
-        
+                return render_template("map_page.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_D,
+                                       lineCoord_3=path_D_B)
 
-        
-        
+
+
+
+
         else:
 
-            #loc is a 2D array of longitude and latitudes for pathing
-            #format: loc = [[sl_x, sl_y], [el_x, el_y]]
+            # loc is a 2D array of longitude and latitudes for pathing
+            # format: loc = [[sl_x, sl_y], [el_x, el_y]]
             loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)
             print(loc)
 
             # taking the geo points on produced and sending it to the map in map_page
             data.update(
                 {
-                'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y
+                    'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y
                 }
-                )
+            )
 
-            print(data)
-            
+            # print(data)
+
             return render_template("map_page.html", data=data, lineCoord=loc)
-        
-    
 
-    
-    
-        
-
-        #runs on default, GET
+        # runs on default, GET
         # data here requires default values or it will crash
     return render_template("map_page.html", data=data)
   
