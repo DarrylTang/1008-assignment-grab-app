@@ -104,33 +104,20 @@
 
       let linesData_1 = {{ lineCoord_1 }}
           console.log(linesData_1);
-
-
-      
-
       
       let linesData_2 = {{ lineCoord_2 }}
           console.log(linesData_2);
 
-      
-
-      
       let linesData_3 = {{ lineCoord_3 }}
           console.log(linesData_3);
       
       
       L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
       L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
-
-      
-
-      // note its mymap, not map
-      
       
       // zoom the map to the polyline
       // mymap.fitBounds(polyline.getBounds());
 
-    
       L.marker([startx_new, starty_new], {title: 'Pickup point_new'}).addTo(mymap);
       L.marker([endx_new, endy_new], {title: 'Dropoff point_new'}).addTo(mymap);
 
