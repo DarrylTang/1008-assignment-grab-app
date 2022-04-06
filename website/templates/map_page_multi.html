@@ -1,0 +1,154 @@
+{% extends "base.html" %} <!-- copy and use the exact same template in base.html -->
+{% block title %}KS MAP{% endblock %}
+
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="input-bar-container">
+    <form method="POST" id="routeForm">
+      <div class="row">
+        <label for="myLocation">Book a ride</label>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Pickup location" id="myLocation" name="myLocation">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Destination" id="mydestination" name="mydestination">
+        </div>
+      </div>
+      <div class="spaces"></div>
+      <button type="submit" class="btn btn-primary" onclick="submitted()">Route me!</button>
+    </form>
+  </div>
+
+{% endblock %}
+
+{% block meat %}
+  
+  <div id="map"></div>
+
+  <!-- suggestion output stuff, display in a dropdown -->
+  <!-- <div class="output_for_suggestion"> 
+    {{ x }}
+  </div> -->
+
+  <script>
+    let startx = 0;
+    let starty = 0;
+    let endx = 0;
+    let endy = 0;
+
+    // these code are SUPER IMPORTANT ======
+    // keeps track of session to prevent the icons from being removed
+    window.onload = function() {
+      var reloading = sessionStorage.getItem("reloading");
+      if (reloading) {
+          sessionStorage.removeItem("reloading");
+          loadRoutes();
+      }
+    }
+
+    function submitted() {
+      sessionStorage.setItem("reloading", "true");
+    }
+    /// SUPER IMPORTANT END ========
+
+    // set map view to a specific lat, long in Singapore
+    let mymap = L.map('map').setView([1.43589365, 103.8007271], 16);
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoiZGFycnlsdGFuZyIsImEiOiJjbDB6NzJ3N3QwbXVtM2Rtb3FkNTR5OXp0In0.a1r9nITXtJiS_ys57yp0Gg'
+    }).addTo(mymap);
+
+    // when user clicks on button, then do a wait, and then add the markers and lines to the map
+    function loadRoutes() {
+
+      // these are variables that was sent from the map.py
+      startx = {{ data.startx }}
+      starty = {{ data.starty }}
+      endx = {{ data.endx }}
+      endy = {{ data.endy }}
+      
+      console.log(startx);
+      console.log(starty);
+      console.log(endx);
+      console.log(endy);
+            
+      //this are the testing
+      startx_new = {{ data.startx_new }}
+      starty_new = {{ data.starty_new }}
+      endx_new = {{ data.endx_new }}
+      endy_new = {{ data.endy_new }}
+      
+      console.log(startx_new);
+      console.log(starty_new);
+      console.log(endx_new);
+      console.log(endy_new);
+
+
+      let latlngs = [
+      [1.43589365, 103.8007271],
+      [1.43565769, 103.8009471],
+      [1.435979454, 103.8012582]
+      ];
+
+      let linesData_1 = {{ lineCoord_1 }}
+          console.log(linesData_1);
+      
+      let linesData_2 = {{ lineCoord_2 }}
+          console.log(linesData_2);
+
+      let linesData_3 = {{ lineCoord_3 }}
+          console.log(linesData_3);
+      
+      
+      L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
+      L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
+      
+      // zoom the map to the polyline
+      // mymap.fitBounds(polyline.getBounds());
+
+      L.marker([startx_new, starty_new], {title: 'Pickup point_new'}).addTo(mymap);
+      L.marker([endx_new, endy_new], {title: 'Dropoff point_new'}).addTo(mymap);
+
+
+      function inner_route1() {
+        let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap);
+      }
+
+      function inner_route2() {
+        let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap);
+      }
+
+      function inner_route3() {
+        let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap);
+      }
+
+      setInterval(inner_route1, 1000);
+      setInterval(inner_route2, 5000);
+      setInterval(inner_route3, 10000);
+
+      //setInterval(let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap),3000);
+      //setInterval(let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap),3000);
+      //setInterval(let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap),3000);
+      //let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap);
+
+      //let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap);
+
+      //let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap);
+    }
+
+
+  
+  </script>
+{% endblock %}
