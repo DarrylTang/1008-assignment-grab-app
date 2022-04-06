@@ -1,0 +1,48 @@
+{% extends "base.html" %} <!-- copy and use the exact same template in base.html -->
+{% block title %}Driver Details{% endblock %}
+
+{% block content %}
+
+    {% for row in rows %}
+    <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+{#                <div class="col-md-4">#}
+{#                    <img src="..." class="img-fluid rounded-start" alt="...">#}
+{#                </div>#}
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Driver Name:{{ row["driverName"] }}</h5>
+                        <p class="card-text">Driver Id: {{ row["driverId"] }}</p>
+                        <p class="card-text">Car Plate: {{ row["carPlate"] }}</p>
+                        <p class="card-text">Car Type: {{ row["carType"] }}</p>
+                        <p class="card-text">Stationed Location: {{ row["driverLoc"] }}</p>
+                        <p class="card-text">Driver Rating: {{ row["driverRate"] }}</p>
+                        <button type="button" class="btn btn-primary">Book a ride</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{#    <table>#}
+{#        <thead>#}
+{#        <td>Driver ID</td>#}
+{#        <td>Driver Name</td>#}
+{#        <td>Car Plate</td>#}
+{#        <td>Car Type</td>#}
+{#        <td>Location (Stationed)</td>#}
+{#        <td>Driver Ratings</td>#}
+{#        </thead>#}
+{##}
+{#        {% for row in rows %}#}
+{#            <tr>#}
+{#                <td>{{ row["driverId"] }}</td>#}
+{#                <td>{{ row["driverName"] }}</td>#}
+{#                <td>{{ row["carPlate"] }}</td>#}
+{#                <td>{{ row["carType"] }}</td>#}
+{#                <td>{{ row["driverLoc"] }}</td>#}
+{#                <td>{{ row["driverRate"] }}</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#    </table>#}
+{% endblock %}

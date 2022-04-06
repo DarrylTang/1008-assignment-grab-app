@@ -1,0 +1,56 @@
+<!-- This file is not being used/rendered to the program -->
+
+{#<html>#}
+{#    <head>#}
+{#      <title>Map</title>#}
+{#      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />#}
+{#      <script src="https://cdn.onemap.sg/leaflet/onemap-leaflet.js"></script>#}
+{##}
+{#      <!-- Load the css file -->#}
+{#      <link#}
+{#      rel="stylesheet"#}
+{#      href="{{ url_for('static', filename='css/style.css') }}"#}
+{#      />#}
+{#    </head>#}
+{% extends "base.html" %} <!-- copy and use the exact same template in base.html -->
+{% block title %}HomeMap{% endblock %}
+
+{% block content %}
+    <body>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+
+         <!-- <div id='mapdiv'></div> -->
+{#        <div id='navigation'>#}
+
+
+          <form method="POST">
+          <p id = 'header'>Where do you want to go?</p>
+          <textarea
+            type= "text"
+            name="myLocation"
+            id="myLocationarea"
+
+            placeholder="Search for a destination..."
+            maxlength="400">
+
+          </textarea>
+          <p id = 'header'>Where are you?</p>
+          <textarea
+            type= "text"
+            name="mydestination"
+            id="mydestinationarea"
+
+            placeholder="Search for a location..."
+            maxlength="400">
+
+          </textarea>
+
+          <button type = "submit" class ="btn btn-primary">Submit</button>
+          </form>
+
+{#        </div>#}
+    </body>
+
+ 
+{% endblock %}
+{#</html>#}

@@ -1,0 +1,34 @@
+{% extends "base.html" %} <!-- copy and use the exact same template in base.html -->
+{% block title %}Reviews{% endblock %}
+
+{# ammended for reviews#}
+
+{% block content %}
+    <h3>Our cool drivers</h3>
+    <button type="button" class="btn btn-dark">
+        <a class="review1" id="review1" href="/review">byID</a>
+    </button>
+    <button type="button" class="btn btn-dark">
+        <a class="review2" id="review2" href="/review2">byRate</a>
+    </button>
+    {% for row in rows %}
+    <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+{#                <div class="col-md-4">#}
+{#                    <img src="..." class="img-fluid rounded-start" alt="...">#}
+{#                </div>#}
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ row["driverName"] }}</h5>
+                        <p class="card-text">Driver Rating: {{ row["driverRate"] }}</p>
+                        <button type="button" class="btn btn-secondary">
+                            <a id="driver_detail" href="/driver_detail">View more details</a>
+                        </button>
+                        <button type="button" class="btn btn-primary">Book a ride</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
