@@ -87,7 +87,7 @@ class Graph:
 
         totalDistance = distance[destinationNode]
 
-        return pathingCoords, distance[destinationNode]
+        return pathingCoords, totalDistance
 
     def print(self):
         print(self.graph)
