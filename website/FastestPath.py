@@ -24,7 +24,7 @@ class FastestGraph:
         self.graph[node2].update({node1: timeTaken})
 
     def linkAllNodes(self):
-        df = pd.read_csv("linked-nodes-with-speed.csv")
+        df = pd.read_csv("linked-nodes.csv")
 
         for node1, node2 , speed in zip(list(df['node1']), list(df['node2']), list(df['speed'])):
             self.addEdge(node1, node2, speed)
