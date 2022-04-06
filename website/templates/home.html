@@ -1,16 +1,16 @@
 {% extends "base.html" %} <!-- copy and use the exact same template in base.html -->
-{% block title %}HomeMap{% endblock %}
+{% block title %}Home{% endblock %}
 
-{% block content %}
+{% block meat %}
+    <div class="hero-image">
+        <div class="hero-content">
 
-  <div class="home">
-    <h1 class="display-4">Welcome to team _ Ride hailing application!</h1>
+            <h1 class="display-5 fw-bolder">Book your ride today.</h1>
 
-    <p class="text-center">Select the type of ride you would like below:</p>
-    
-    <a class="btn btn-primary" href="/map_page" role="button">Single ride</a>
-    <a class="btn btn-secondary" href="/map_page_multi" role="button">Ride Sharing</a>
-  </div>
- 
+            <p>Select your type of ride:</p>
+
+            <a class="btn btn-primary" href="/map_page" role="button">Single ride</a>
+            <a class="btn btn-light" href="/map_page_multi" role="button">Ride Sharing</a>
+        </div>
+    </div>
 {% endblock %}
-{#</html>#}
