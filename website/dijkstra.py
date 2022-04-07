@@ -1,53 +1,63 @@
-from .Nodes import *
+from .nodes import *
 import pandas as pd
 import sys
-
 class Graph:
     def __init__(self, nodesArray):
         self.graph = {}
         self.nodesArray = nodesArray
 
     #undirected graph
-    def addEdge(self, node1, node2):
-        distance = nodesDistance(node1, node2, self.nodesArray)
+    def addEdge(self, node1, node2, speed):
+        cost = nodesDistance(node1, node2, self.nodesArray)
+
+        if speed:
+            #speed stored is in km/h
+            #distance is in metres
+            #divided by 3.6 to convert to m/s
+            #timetaken is in seconds
+            cost = cost / (speed/3.6)
 
         if node1 not in self.graph:
             self.graph[node1] = {}
-        self.graph[node1].update({node2:distance})
+        self.graph[node1].update({node2:cost})
 
         if node2 not in self.graph:
             self.graph[node2] = {}
-        self.graph[node2].update({node1:distance})
+        self.graph[node2].update({node1:cost})
 
-    def linkAllNodes(self):
+    def linkAllNodes(self, speedGraph):
         df = pd.read_csv("./website/linked-nodes.csv")
 
-        for node1, node2 in zip(list(df['node1']), list(df['node2'])):
-            self.addEdge(node1, node2)
+        if not speedGraph: 
+            for node1, node2 in zip(list(df['node1']), list(df['node2'])):
+                self.addEdge(node1, node2, None)
+        else:
+            for node1, node2, speed in zip(list(df['node1']), list(df['node2']), list(df['speed'])):
+                self.addEdge(node1, node2, speed)
 
     def dijkstraAlgoGetPath(self, sourceNode, destinationNode):
         inf = sys.maxsize
-        distance = {}
+        distanceOrTime = {}
         prev = {}
         unvisitedNodes = []
 
         #initialize distance and previous dict
         for vertex in self.graph.keys():
-            distance[vertex] = inf
+            distanceOrTime[vertex] = inf
             prev[vertex] = None
             unvisitedNodes.append(vertex)
-        distance[sourceNode] = 0
+        distanceOrTime[sourceNode] = 0
 
         #visit each node, while list is not empty
         while len(unvisitedNodes):
             currentNode = unvisitedNodes[0]
-            minDist = distance[currentNode]
+            minDist = distanceOrTime[currentNode]
             
             #find closest neighbour to currentNode to visit
             for i in unvisitedNodes:
-                if distance[i] < minDist:
+                if distanceOrTime[i] < minDist:
                     currentNode = i
-                    minDist = distance[i]
+                    minDist = distanceOrTime[i]
 
             #remove from unvisitedNode, mark as visited
             unvisitedNodes.remove(currentNode)
@@ -55,10 +65,10 @@ class Graph:
             #check each neighbour linked to currentNode, update cost in distance dict
             for neighbour in self.graph[currentNode]:
                 if neighbour in unvisitedNodes:
-                    cost = distance[currentNode] + self.graph[currentNode][neighbour]
+                    cost = distanceOrTime[currentNode] + self.graph[currentNode][neighbour]
 
-                    if cost < distance[neighbour]:
-                        distance[neighbour] = cost
+                    if cost < distanceOrTime[neighbour]:
+                        distanceOrTime[neighbour] = cost
                         prev[neighbour] = currentNode
 
                     #if destination already reached, break
@@ -77,7 +87,6 @@ class Graph:
             temp = prev[temp]
 
         path.reverse()
-        # print(path)
 
         #pathing coordinates, array of (lat, long) from start to end destination
         pathingCoords = []
@@ -85,10 +94,13 @@ class Graph:
         for i in path:
             pathingCoords.append([self.nodesArray[i].latitude, self.nodesArray[i].longitude])
 
-        totalDistance = distance[destinationNode]
+        # cost here refers to either time or distance depending on self.graph
+        # two types of graph can be created, nodes with speed or nodes with distance graph
+        # returned value distance is in metres
+        # returned value time is in seconds
+        totalCost = distanceOrTime[destinationNode]
 
-        return pathingCoords, totalDistance
+        return pathingCoords, totalCost
 
     def print(self):
         print(self.graph)
-

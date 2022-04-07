@@ -8,9 +8,9 @@ import requests
 import haversine
 import os
 import pickle
-from .Nodes import *
+from .nodes import *
 import random
-from .DijkstraAlgo import *
+from .dijkstra import *
 
 import sqlite3
 from sqlite3 import Error
@@ -50,8 +50,8 @@ def findgeocoordinates(x):
             print("Its a matchhhh")
             
             return getcoordinates(x)
-        else:
-            print("Result not found")
+        # else:
+        #     print("Result not found")
 
 def find_distance(userinput, nodesArray):
     minimum_dist = minimum = 728600
@@ -69,12 +69,10 @@ def find_distance(userinput, nodesArray):
     
     return minimum
 
-
 def ridesharePassenger_generator():
     return random.randint(1,180)
 
 def ridesharePassenger_checker(passenger_pickup,passenger_dropoff,passenger_pickup_new,passenger_dropoff_new, nodesArray):
-    
     Did_it_pass = False
     
     point_A = (nodesArray[passenger_pickup].latitude, nodesArray[passenger_pickup].longitude)
@@ -117,9 +115,7 @@ def rideshareDistance_checker(passenger_pickup,passenger_dropoff,passenger_picku
     elif (distance_A_C_B_D/75 == distance_A_C_D_B/75):
         return 1
 
-
 #database stuffu
-
 def createConnection(db_file):
     conn = None
     try:
@@ -127,22 +123,16 @@ def createConnection(db_file):
         return conn
     except Error as e:
         print(e)
-
     return conn
 
-
 def createTable(conn, create_table_sql):
-
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
     except Error as e:
         print(e)
 
-
-
 def createDrivers(conn, driversTable):
-
     sql = ''' INSERT INTO driversTable(driverId, driverName, carPlate, carType, driverLat, driverLong, driverRate)
               VALUES(?,?,?,?,?,?,?) '''
     cur = conn.cursor()
@@ -176,7 +166,6 @@ def selectUpdate(conn):
 
     for row in rows:
         print(row)
-    
 
 def drivers():
     conn = createConnection(database)
@@ -185,16 +174,16 @@ def drivers():
         updateDriver(conn, (nodesArray[i].latitude, nodesArray[i].longitude, 1))
         selectUpdate(conn)
         
-
-
-	
-
 #Building the referencing dataset
-
 filename = 'dataset_of_addresses'
 datastore = {}
 nodesArray = getNodesArray()
+#True if using speed, else if using distance then false
+distanceGraph = Graph(nodesArray)
+distanceGraph.linkAllNodes(False)
 
+speedGraph = Graph(nodesArray)
+speedGraph.linkAllNodes(True)
 
 if os.path.isfile('dataset_of_addresses'):
     print ("File exist")
@@ -202,14 +191,12 @@ if os.path.isfile('dataset_of_addresses'):
     datastore = pickle.load(infile)
     infile.close()
     print(datastore)
-    
 else:
     print ("File not exist")
         
     #get the excel
     df = pd.read_csv("website\static\hdb-property-information.csv")
             
-
     #fetch and format data from excel
     df['Address'] = df['blk_no'] + " " + df['street']
         #actual data is 12472 rows but for testing use 50
@@ -223,11 +210,7 @@ else:
     pickle.dump(datastore,outfile)
     outfile.close()
 
-
-
 database = r"drivers.db"
-
-
 
 # instead of using folium which limits a lot of functionality and documentation sucks, the variables and arrays here will be sent to a javascript file to make 
 # use of leaflet
@@ -248,10 +231,10 @@ def read_map():
 
     if request.method == 'POST':
         print("executing the POST....")
+
         driver_is_travelling = False
         
         # below is what is being typed in from the user.
-        
         starting_location = request.form.get('myLocation')
         ending_location = request.form.get('mydestination')
 
@@ -271,17 +254,9 @@ def read_map():
         sourceNode = find_distance(coor,nodesArray)   
         destinationNode = find_distance(coor_2,nodesArray)
 
-        
         #load the driver
         drivers()
         
-        
-        
-        
-        #pass reference of first node in the list to the graph class
-        graph = Graph(nodesArray)
-        graph.linkAllNodes()
-
         # sl_x = float(coor[0])
         # sl_y = float(coor[1])
         sl_x = nodesArray[sourceNode].latitude
@@ -302,7 +277,6 @@ def read_map():
         #     tooltip="Click Me!"
         # ).add_to(map)
 
-        
         #Rideshare function
         passenger_new_pickup  = ridesharePassenger_generator()
         passenger_new_dropoff = ridesharePassenger_generator()
@@ -312,8 +286,6 @@ def read_map():
         print(check)
         
         if (check == True):
-            
-        
             passenger_new_pickup_x = nodesArray[passenger_new_pickup].latitude
             passenger_new_pickup_y = nodesArray[passenger_new_pickup].longitude
             
@@ -323,7 +295,7 @@ def read_map():
             #loc is a 2D array of longitude and latitudes for pathing
             #format: loc = [[sl_x, sl_y], [el_x, el_y]]
             
-            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)[0]
+            loc = distanceGraph.dijkstraAlgoGetPath(sourceNode, destinationNode)[0]
             print(loc)
             
             path_picked = rideshareDistance_checker(sourceNode,destinationNode,passenger_new_pickup,passenger_new_dropoff, nodesArray)
@@ -331,12 +303,10 @@ def read_map():
             print(path_picked)
             
             if path_picked == 1:
-                path_A_C = graph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)[0]
-                path_C_B = graph.dijkstraAlgoGetPath(passenger_new_pickup,destinationNode)[0]
-                path_B_D = graph.dijkstraAlgoGetPath(destinationNode,passenger_new_dropoff)[0]
-                
-            
-            
+                path_A_C = distanceGraph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)[0]
+                path_C_B = distanceGraph.dijkstraAlgoGetPath(passenger_new_pickup,destinationNode)[0]
+                path_B_D = distanceGraph.dijkstraAlgoGetPath(destinationNode,passenger_new_dropoff)[0]
+
                 # taking the geo points on produced and sending it to the map in map_page
                 data.update(
                     {
@@ -347,13 +317,11 @@ def read_map():
                     )
 
                 print(data)
-                
                 return render_template("map_page.html", data=data, lineCoord_1=path_A_C , lineCoord_2=path_C_B , lineCoord_3=path_B_D)
-            
             elif path_picked == 2:
-                path_A_C = graph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)[0]
-                path_C_D = graph.dijkstraAlgoGetPath(passenger_new_pickup,passenger_new_dropoff)[0]
-                path_D_B = graph.dijkstraAlgoGetPath(passenger_new_dropoff,destinationNode)[0]
+                path_A_C = distanceGraph.dijkstraAlgoGetPath(sourceNode,passenger_new_pickup)[0]
+                path_C_D = distanceGraph.dijkstraAlgoGetPath(passenger_new_pickup,passenger_new_dropoff)[0]
+                path_D_B = distanceGraph.dijkstraAlgoGetPath(passenger_new_dropoff,destinationNode)[0]
         
                 new_loc = path_A_C + path_C_D + path_D_B
                 
@@ -369,16 +337,10 @@ def read_map():
                 print(data)
                 
                 return render_template("map_page.html", data=data, lineCoord_1=path_A_C , lineCoord_2=path_C_D , lineCoord_3=path_D_B)
-
-        
-
-        
-        
         else:
-
             #loc is a 2D array of longitude and latitudes for pathing
             #format: loc = [[sl_x, sl_y], [el_x, el_y]]
-            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)[0]
+            loc = distanceGraph.dijkstraAlgoGetPath(sourceNode, destinationNode)[0]
             print(loc)
 
             # taking the geo points on produced and sending it to the map in map_page
@@ -391,18 +353,6 @@ def read_map():
             print(data)
             
             return render_template("map_page.html", data=data, lineCoord=loc)
-        
-    
-
-    
-    
-        
-
         #runs on default, GET
         # data here requires default values or it will crash
     return render_template("map_page.html", data=data)
-  
-    
-
-
-       
