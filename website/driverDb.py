@@ -1,6 +1,7 @@
+# from .DijkstraAlgo import *
 import sqlite3
 from sqlite3 import Error
-
+from turtle import update
 
 def createConnection(db_file):
     conn = None
@@ -12,9 +13,7 @@ def createConnection(db_file):
 
     return conn
 
-
 def createTable(conn, create_table_sql):
-
     try:
         c = conn.cursor()
         c.execute(create_table_sql)
@@ -23,8 +22,8 @@ def createTable(conn, create_table_sql):
 
 def createDrivers(conn, driversTable):
 
-    sql = ''' INSERT INTO driversTable(driverId, driverName, carPlate, carType, driverLat, driverLong, driverRate)
-              VALUES(?,?,?,?,?,?,?) '''
+    sql = ''' INSERT INTO driversTable(driverId, driverName, carPlate, carType, driverNode, driverRate)
+              VALUES(?,?,?,?,?,?) '''
     cur = conn.cursor()
     cur.execute(sql, driversTable)
     conn.commit()
@@ -32,8 +31,7 @@ def createDrivers(conn, driversTable):
 
 def updateDriver(conn, driversTable):
     sql = ''' UPDATE driversTable
-              SET driverLat = ? ,
-                  driverLong = ?
+              SET driverNode = ?
               WHERE driverId = ?'''
     cur = conn.cursor()
     cur.execute(sql, driversTable)
@@ -60,31 +58,30 @@ def selectUpdate(conn):
 
 
 def main():
-    database = r"drivers.db"
+    # database = r"C:\Users\cxuel\Documents\GitHub\1008-assignment-grab-app\website\drivers.db"
+    database = r"C:\Users\cxuel\Documents\GitHub\1008-assignment-grab-app\website\drivers.db"
 
     # sql_create_driversTable = """ CREATE TABLE IF NOT EXISTS driversTable (
     #                                     driverId integer,
     #                                     driverName text,
     #                                     carPlate text,
     #                                     carType text,
-    #                                     driverLat text,
-    #                                     driverLong text,
+    #                                     driverNode integer,
     #                                     driverRate integer
     #                                 ); """
+
 
     # create a database connection
     conn = createConnection(database)
     # create tables
     # if conn is not None:
     #     # create projects table
-    #     create_table(conn, sql_create_driversTable)
+    #     createTable(conn, sql_create_driversTable)
 
-    #     # create tasks table
-    #     # create_table(conn, sql_create_tasks_table)
     # else:
     #     print("Error! cannot create the database connection.")
 
-    with conn:
+    # with conn:
         # create new driver data and insert
         # driver = (1, 'Jacky', 'S123456', 'Honda', 119, 118, 5);
         # driver = (2, 'Kristin', 'S456789', 'BMW', 116, 171, 5);
@@ -101,15 +98,34 @@ def main():
         # driver = (13, 'Glenda', 'S871264', 'Hyundai', 112, 113, 5);
         # driver = (14, 'Jerry', 'S817492', 'BMW', 115, 114, 1);
         # driver = (15, 'Nancy', 'S812704', 'BMW', 109, 87, 5);
+
+        # driver = (1, 'Jacky', 'S123456', 'Honda', 112, 5);
+        # driver = (2, 'Kristin', 'S456789', 'BMW', 168, 5);
+        # driver = (3, 'Johnson', 'S987654', 'Toyota', 182, 3);
+        # driver = (4, 'Jessie', 'S763890', 'Hyundai', 165, 4);
+        # driver = (5, 'Daniel', 'S583918', 'Honda', 69, 2);
+        # driver = (6, 'Sammy', 'S923478', 'Hyundai', 158, 5);
+        # driver = (7, 'Mandy', 'S871347', 'Toyota', 150, 2);
+        # driver = (8, 'Kate', 'S962160', 'BMW', 152, 5);
+        # driver = (9, 'Yumi', 'S762937', 'Honda', 41, 4);
+        # driver = (10, 'Ben', 'S823471', 'Honda', 147, 3);
+        # driver = (11, 'Cassy', 'S817549', 'BMW', 119, 3);
+        # driver = (12, 'Leon', 'S965417', 'Toyota', 82, 1);
+        # driver = (13, 'Glenda', 'S871264', 'Hyundai', 28, 5);
+        # driver = (14, 'Jerry', 'S817492', 'BMW', 34, 1);
+        # driver = (15, 'Nancy', 'S812704', 'BMW', 150, 5);
         # createDrivers(conn, driver)
 
         # selectData(conn)
 
-        i = 1
-        while i < 6:
-            updateDriver(conn, (70, 67, 1))
-            selectUpdate(conn)
-            i += 1
+        # updateDriver(conn, (184, 1))
+        # selectUpdate(conn)
+
+        # i = 1
+        # while i < 6:
+        #     updateDriver(conn, (70, 67, 1))
+        #     selectUpdate(conn)
+        #     i += 1
         # updateDriver(conn, (70, 67, 1))
         # selectUpdate(conn)
   
