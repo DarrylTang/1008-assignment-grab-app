@@ -203,15 +203,19 @@ def read_map_multi():
         #Clean up the userInput 
         starting_location = starting_location.strip('\r\n      ')
         ending_location = ending_location.strip('\r\n      ')
-
-
         starting_location= starting_location.upper()
         ending_location = ending_location.upper()
 
 
-        #Print the user input into the terminal
-        print(starting_location)
-        print(ending_location)
+        #Process User INput
+        starting_location_2 = request.form.get('myLocation_2')
+        ending_location_2 = request.form.get('mydestination_@')
+        #Clean up the userInput 
+        starting_location_2 = starting_location_2.strip('\r\n      ')
+        ending_location_2 = ending_location_2.strip('\r\n      ')
+        starting_location_2= starting_location_2.upper()
+        ending_location_2 = ending_location_2.upper()
+
 
         #Checks if the user has inputed a valid location else prompt again
         if (Check_Valid_User_Input(starting_location)== None or Check_Valid_User_Input(ending_location)== None or Check_Valid_User_Input(starting_location) == Check_Valid_User_Input(ending_location)):
@@ -222,31 +226,26 @@ def read_map_multi():
             Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location), nodesArray)
             Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location), nodesArray)
 
-            
+
+
             source_location_x = nodesArray[Closest_Node_to_Pickup].latitude
             source_location_y = nodesArray[Closest_Node_to_Pickup].longitude
-
-
             end_location_x = nodesArray[Closest_Node_to_Dropoff].latitude
             end_location_y = nodesArray[Closest_Node_to_Dropoff].longitude
             
+            
+            additional_Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location_2), nodesArray)
+            additional_Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location_2), nodesArray)
+            
+            additional_source_location_x = nodesArray[additional_Closest_Node_to_Pickup].latitude
+            additional_source_location_y = nodesArray[additional_Closest_Node_to_Pickup].longitude
+            additional_end_location_x = nodesArray[additional_Closest_Node_to_Dropoff].latitude
+            additional_end_location_y = nodesArray[additional_Closest_Node_to_Dropoff].longitude
+            
             #We need our comparison for pathing here
             location_path = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
-            
-            #nodesNum = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[2]
-            """print("DISTANCE PATH")
-            print(location_path)
-            print(nodesNum)
-            """
-
             location_path_speed = speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             
-            #nodesNo = speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[2]    
-                   
-            """print("SPEEDY PATH")
-            print(location_path_speed)
-            print(nodesNo)
-            """
             data.update({
                 'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y
             })
