@@ -10,6 +10,7 @@ import pickle
 from .nodes import *
 import random
 from .dijkstra import *
+from .driverDb import *
 
 import sqlite3
 from sqlite3 import Error
@@ -33,6 +34,16 @@ def OneMapAPI_data_retreive(address):
 new_dict_data_all = ""
 datastore = {}
 nodesArray = getNodesArray()
+
+#True if using speed, else if using distance then false
+distanceGraph = Graph(nodesArray)
+distanceGraph.linkAllNodes(False)
+
+speedGraph = Graph(nodesArray)
+speedGraph.linkAllNodes(True)
+
+#initialize driver database
+database = DriverDatabase()
 
 filename = 'dataset_of_postal'
 
@@ -107,7 +118,6 @@ def read_map():
     if request.method == 'POST':
         print("executing the POST....")
 
-
         #Process User INput
         starting_location = request.form.get('myLocation')
         ending_location = request.form.get('mydestination')
@@ -176,14 +186,6 @@ def read_map():
 @map.route('/map_page_multi', methods=['GET', 'POST'])  # add url here
 def read_map_multi():
 
-    #True if using speed, else if using distance then false
-    distanceGraph = Graph(nodesArray)
-    distanceGraph.linkAllNodes(False)
-
-    speedGraph = Graph(nodesArray)
-    speedGraph.linkAllNodes(True)
-    
-    
     #To pass back into the html Side
     data = {'startx': 1.43589365, 'starty': 103.8007271}
 
