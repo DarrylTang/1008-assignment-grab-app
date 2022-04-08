@@ -8,7 +8,7 @@ pip install requests\
 pip install pandas\
 pip install haversine
 
-To install geopanda:
+To install geopanda:\
 pip install GDAL-3.4.2-cp310-cp310-win_amd64.whl\
 pip install pyproj-3.3.0-cp310-cp310-win_amd64.whl\
 pip install Fiona-1.8.21-cp310-cp310-win_amd64.whl\
