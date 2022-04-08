@@ -114,6 +114,10 @@ def getNearestDriver(userNode):
     return driverAssigned
 
 
+def additional_UserPickup_Check(userPickup1 , userPickup2):
+    if (speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]):
+        
+    
 
 
 @map.route('/map_page', methods=['GET', 'POST'])  # add url here
@@ -235,16 +239,9 @@ def read_map_multi():
             return render_template("map_page_multi.html",  data=data)
         
         else:
-<<<<<<< Updated upstream
-            Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location), nodesArray)
-            Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location), nodesArray)
-            print("The closest Node for passenge 1 pickup is " + str(Closest_Node_to_Pickup))
-            print("The closest Node for passenge 1 dropoff is " + str(Closest_Node_to_Dropoff))
-=======
             Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location))
             Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location))
 
->>>>>>> Stashed changes
 
 
             source_location_x = nodesArray[Closest_Node_to_Pickup].latitude
@@ -255,16 +252,8 @@ def read_map_multi():
             end_location_y = nodesArray[Closest_Node_to_Dropoff].longitude
             
             
-<<<<<<< Updated upstream
-            additional_Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location_2), nodesArray)
-            additional_Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location_2), nodesArray)
-            print("The closest Node for passenge 2 pickup is " + str(additional_Closest_Node_to_Pickup))
-            print("The closest Node for passenge 2 dropoff is " + str(additional_Closest_Node_to_Dropoff))
-            
-=======
             additional_Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location_2))
             additional_Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location_2))
->>>>>>> Stashed changes
             
             additional_source_location_x = nodesArray[additional_Closest_Node_to_Pickup].latitude
             additional_source_location_y = nodesArray[additional_Closest_Node_to_Pickup].longitude
