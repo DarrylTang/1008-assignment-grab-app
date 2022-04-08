@@ -86,7 +86,6 @@
     // when user clicks on button, then do a wait, and then add the markers and lines to the map
     function loadRoutes() {
 
-      // these are variables that was sent from the map.py
       startx = {{ data.startx }}
       starty = {{ data.starty }}
       endx = {{ data.endx }}
@@ -97,24 +96,36 @@
       console.log(endx);
       console.log(endy);
 
-      let loc = {{ lineCoord }}
+      let latlngs = [
+      [1.43589365, 103.8007271],
+      [1.43565769, 103.8009471],
+      [1.435979454, 103.8012582]
+      ];
 
-        /*
-      if (startx === null || starty === null || endx === null || endy === null || loc === null) {
-          // show dialogue that things are empty
-          warning.style.display = "block";
-      } else {
-
-      }
-         */
-
+      let linesData = {{ lineCoord }}
+          console.log(linesData);
+      
+      let linesData_2 = {{ lineCoord2 }}
+      
       L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
       L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
 
-      // zoom the map to the polyline
-      //mymap.fitBounds(polyline.getBounds());
+      function wb_path() {
+        let polyline1 = L.polyline(linesData,{className: 'animate'}).setStyle({
+          color: 'red'
+        }).addTo(mymap);
+  
+      }
 
-      L.polyline(loc, {className: 'animate'}).addTo(mymap);
+      function fatimah_path() {
+        let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
+          color: 'blue'
+        }).addTo(mymap);
+      }
+
+      setInterval(fatimah_path, 1000);
+      setInterval(wb_path, 5000);
+      
 
     }
 
