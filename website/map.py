@@ -198,8 +198,6 @@ def read_map_multi():
         #Process User INput
         starting_location = request.form.get('myLocation')
         ending_location = request.form.get('mydestination')
-
-
         #Clean up the userInput 
         starting_location = starting_location.strip('\r\n      ')
         ending_location = ending_location.strip('\r\n      ')
@@ -225,20 +223,27 @@ def read_map_multi():
         else:
             Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location), nodesArray)
             Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location), nodesArray)
-
+            print("The closest Node for passenge 1 pickup is " + str(Closest_Node_to_Pickup))
+            print("The closest Node for passenge 1 dropoff is " + str(Closest_Node_to_Dropoff))
 
 
             source_location_x = nodesArray[Closest_Node_to_Pickup].latitude
             source_location_y = nodesArray[Closest_Node_to_Pickup].longitude
+            
+            
             end_location_x = nodesArray[Closest_Node_to_Dropoff].latitude
             end_location_y = nodesArray[Closest_Node_to_Dropoff].longitude
             
             
             additional_Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location_2), nodesArray)
             additional_Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location_2), nodesArray)
+            print("The closest Node for passenge 2 pickup is " + str(additional_Closest_Node_to_Pickup))
+            print("The closest Node for passenge 2 dropoff is " + str(additional_Closest_Node_to_Dropoff))
+            
             
             additional_source_location_x = nodesArray[additional_Closest_Node_to_Pickup].latitude
             additional_source_location_y = nodesArray[additional_Closest_Node_to_Pickup].longitude
+            
             additional_end_location_x = nodesArray[additional_Closest_Node_to_Dropoff].latitude
             additional_end_location_y = nodesArray[additional_Closest_Node_to_Dropoff].longitude
             
@@ -246,11 +251,14 @@ def read_map_multi():
             location_path = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             location_path_speed = speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             
+            
+            additional_location_path = distanceGraph.dijkstraAlgoGetPath(additional_Closest_Node_to_Pickup, additional_Closest_Node_to_Dropoff)[0]
+            
             data.update({
                 'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y ,
-                'startx_2': source_location_x, 'starty_2': source_location_y,
+                'startx_2': additional_source_location_x, 'starty_2': additional_source_location_y , 'endx_2': additional_end_location_x, 'endy_2': additional_end_location_y , 
             })
-            #'startx_2': source_location_x, 'starty_2': source_location_y, 'endx_2': additional_end_location_x, 'endy_2': additional_end_location_y 
+           
             
             print(data)
         
@@ -258,7 +266,7 @@ def read_map_multi():
         
         
                     
-            return render_template("map_page_multi.html", data=data, lineCoord=location_path , lineCoord2=location_path_speed)
+            return render_template("map_page_multi.html", data=data, lineCoord=location_path , lineCoord2=location_path_speed , lineCoord3 = additional_location_path)
 
         # runs on default, GET
         # data here requires default values or it will crash
