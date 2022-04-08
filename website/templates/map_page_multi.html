@@ -24,10 +24,10 @@
         <div class="spaces"></div>
         <div class="form-row">
         <div class="col">
-          <input type="text" class="form-control" placeholder="Addtional Pickup" id="" name="">
+          <input type="text" class="form-control" placeholder="Addtional Pickup" id="myLocation_2" name="myLocation_2">
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Additional Destination" id="" name="">
+          <input type="text" class="form-control" placeholder="Additional Destination" id="mydestination_2" name="mydestination_2">
         </div>
       </div>
       <div class="spaces"></div>
@@ -81,47 +81,98 @@
 
     // when user clicks on button, then do a wait, and then add the markers and lines to the map
     function loadRoutes() {
+                
+              startx = {{ data.startx }}
+              starty = {{ data.starty }}
+              endx = {{ data.endx }}
+              endy = {{ data.endy }}
+              
+              console.log(startx);
+              console.log(starty);
+              console.log(endx);
+              console.log(endy);
 
-      startx = {{ data.startx }}
-      starty = {{ data.starty }}
-      endx = {{ data.endx }}
-      endy = {{ data.endy }}
-      
-      console.log(startx);
-      console.log(starty);
-      console.log(endx);
-      console.log(endy);
+              
+              startx_2 = {{ data.startx_2 }}
+              starty_2 = {{ data.starty_2 }}
+              endx_2 = {{ data.endx_2 }}
+              endy_2 = {{ data.endy_2 }}
+              
+              console.log(startx_2);
+              console.log(starty_2);
+              console.log(endx_2);
+              console.log(endy_2);
 
-      let latlngs = [
-      [1.43589365, 103.8007271],
-      [1.43565769, 103.8009471],
-      [1.435979454, 103.8012582]
-      ];
+              //L.marker([startx_2, starty_2], {title: 'Pickup point'}).addTo(mymap);
+              //L.marker([endx_2, endy_2], {title: 'Dropoff point'}).addTo(mymap);
 
-      let linesData = {{ lineCoord }}
-          console.log(linesData);
-      
-      let linesData_2 = {{ lineCoord2 }}
-      
-      L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
-      L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
+              let latlngs = [
+              [1.43589365, 103.8007271],
+              [1.43565769, 103.8009471],
+              [1.435979454, 103.8012582]
+              ];
 
-      function wb_path() {
-        let polyline1 = L.polyline(linesData,{className: 'animate'}).setStyle({
-          color: 'red'
-        }).addTo(mymap);
-  
-      }
+              let linesData_1 = {{ lineCoord_1 }}
+                    console.log(linesData_1);
 
-      function fatimah_path() {
-        let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
-          color: 'blue'
-        }).addTo(mymap);
-      }
+              let linesData_2 = {{ lineCoord_2 }}
+                    console.log(linesData_2);
 
-      setInterval(fatimah_path, 1000);
-      setInterval(wb_path, 5000);
-      
+              let linesData_3 = {{ lineCoord_3 }}
+                    console.log(linesData_3);
+
+              let linesData_4 = {{ lineCoord_4 }}
+                    console.log(linesData_4);
+              
+              
+
+              
+              L.marker([startx_2, starty_2], {title: 'Pickup point'}).addTo(mymap);
+              L.marker([endx_2, endy_2], {title: 'Dropoff point'}).addTo(mymap);  
+              L.marker([startx, starty], {title: 'Pickup point_2'}).addTo(mymap);
+              L.marker([endx, endy], {title: 'Dropoff point_2'}).addTo(mymap);
+
+          
+              function wb_path() {
+                let polyline1 = L.polyline(linesData_1,{className: 'animate'}).setStyle({
+                  color: 'red'
+                }).addTo(mymap);
+              }
+
+              function fatimah_path() {
+                let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
+                  color: 'blue'
+                }).addTo(mymap);
+
+              }
+
+              setInterval(fatimah_path, 1000);
+              setInterval(wb_path, 5000);
+              
+              
+     
+              function wb_path_2(){
+                let polyline3 = L.polyline(linesData_3,{className: 'animate'}).setStyle({
+                  color: 'red'
+                }).addTo(mymap);
+              }
+
+              function fatimah_path_2(){
+                let polyline4 = L.polyline(linesData_4,{className: 'animate'}).setStyle({
+                  color: 'blue'
+                }).addTo(mymap);
+              }
+
+
+
+              setInterval(fatimah_path, 1000);
+              setInterval(wb_path, 5000);
+
+              setInterval(fatimah_path_2, 1000);
+              setInterval(wb_path_2, 5000);
+              
+
+
     }
 
 
