@@ -134,18 +134,37 @@
       L.marker([endx_2, endy_2], {title: 'Dropoff point_2'}).addTo(mymap);
             
       
-      let polyline1 = L.polyline(linesData_1,{className: 'animate'}).setStyle({
-        color: 'blue'
-      }).addTo(mymap);
 
-      let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
-        color: 'blue'
-      }).addTo(mymap);
 
-      let polyline3 = L.polyline(linesData_3,{className: 'animate'}).setStyle({
-        color: 'blue'
-      }).addTo(mymap);
       
+
+      
+
+      
+      
+      function inner_route1() {
+        let polyline1 = L.polyline(linesData_1,{className: 'animate'}).setStyle({
+          color: 'blue'
+        }).addTo(mymap);
+      }
+
+      function inner_route2() {
+        let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
+          color: 'red'
+        }).addTo(mymap);
+      }
+
+      function inner_route3() {
+        let polyline3 = L.polyline(linesData_3,{className: 'animate'}).setStyle({
+          color: 'green'
+        }).addTo(mymap);
+      }
+
+      setInterval(inner_route1, 1000);
+      setInterval(inner_route2, 5000);
+      setInterval(inner_route3, 7000);
+
+
 
     }
 
