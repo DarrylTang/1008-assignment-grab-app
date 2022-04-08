@@ -20,7 +20,7 @@ class DriverDatabase:
     def __init__(self):
         try:
             # will create driver.db if it doesn't exist
-            self.conn = sqlite3.connect("website/drivers.db")
+            self.conn = sqlite3.connect("website/drivers.db", check_same_thread=False)
             self.cur = self.conn.cursor()
             self.createTable()
         except Error as e:
@@ -47,8 +47,8 @@ class DriverDatabase:
 
         #if not, insert sample data
         if exist is None:
-            self.insertDriver(Driver(-1, "Matthew", 40, "Honda", "S123456"))
-            self.insertDriver(Driver(-1, "Aster", 30, "BMW", "S817549"))
+            self.insertDriver(Driver(-1, "Matthew", 3, "Honda", "S123456"))
+            self.insertDriver(Driver(-1, "Aster", 5, "BMW", "S817549"))
             self.insertDriver(Driver(-1, "Samantha", 15, "Toyota", "S812704"))
             self.insertDriver(Driver(-1, "Alex", 50, "Honda", "S123456"))
             self.insertDriver(Driver(-1, "John", 70, "BMW", "S763890"))

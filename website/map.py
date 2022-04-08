@@ -3,6 +3,7 @@ from lib2to3.pgen2 import driver
 from flask import Blueprint, render_template, request
 import pandas as pd
 import requests
+import sys
 
 import haversine
 import os
@@ -43,7 +44,7 @@ speedGraph = Graph(nodesArray)
 speedGraph.linkAllNodes(True)
 
 #initialize driver database
-database = DriverDatabase()
+driverDatabase = DriverDatabase()
 
 filename = 'dataset_of_postal'
 
@@ -80,40 +81,43 @@ def Check_Valid_User_Input(User_Input):
                 return new_dict_data_all[i]['results'][0]['LATITUDE'], new_dict_data_all[i]['results'][0]['LONGITUDE']
 
 
-def Return_User_to_Node_Matching(userinput, nodesArray):
-    minimum_dist = minimum = 728600
+def Return_User_to_Node_Matching(userinput):
+    minimum_dist = minimum = sys.maxsize
 
-    print(userinput[0])
-    print(userinput[1])
     user_location = (float(userinput[0]) , float(userinput[1]))
-    print(user_location)
         
     for i in range(0,len(nodesArray)):
         location = (nodesArray[i].latitude, nodesArray[i].longitude)
         
         distance = haversine(user_location, location, unit=Unit.METERS)
+
         if distance< minimum_dist:
             minimum_dist = distance
             minimum = i
             
     return minimum
 
+def getNearestDriver(userNode):
+    minimum_dist = sys.maxsize
+    user_location = (nodesArray[userNode].latitude, nodesArray[userNode].longitude)
 
+    #go through each driver in database
+    for driver in driverDatabase.listOfDrivers:
+        driver_location = (nodesArray[driver.driverLocation].latitude, nodesArray[driver.driverLocation].longitude)
+        
+        distance = haversine(user_location, driver_location, unit=Unit.METERS)
 
+        if distance < minimum_dist:
+            minimum_dist = distance
+            driverAssigned = driver
+            
+    return driverAssigned
 
 
 
 
 @map.route('/map_page', methods=['GET', 'POST'])  # add url here
 def read_map():
-    #True if using speed, else if using distance then false
-    distanceGraph = Graph(nodesArray)
-    distanceGraph.linkAllNodes(False)
-
-    speedGraph = Graph(nodesArray)
-    speedGraph.linkAllNodes(True)
-    
-    
     #To pass back into the html Side
     data = {'startx': 1.43589365, 'starty': 103.8007271}
 
@@ -145,17 +149,24 @@ def read_map():
             return render_template("map_page.html", data=data)
         
         else:
-            Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location), nodesArray)
-            Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location), nodesArray)
+            Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location))
+            Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location))
 
+            driver = getNearestDriver(Closest_Node_to_Pickup)
+            print("MY NEAREST DRIVER IS: " + str(driver.driverName))
             
             source_location_x = nodesArray[Closest_Node_to_Pickup].latitude
             source_location_y = nodesArray[Closest_Node_to_Pickup].longitude
 
+            print("updating driver loc to go to user loc to pickup")
+            driverDatabase.updateDriverLocation(driver.driverId, Closest_Node_to_Pickup)
 
             end_location_x = nodesArray[Closest_Node_to_Dropoff].latitude
             end_location_y = nodesArray[Closest_Node_to_Dropoff].longitude
             
+            print("updating driver loc to go to destination location to drop off")
+            driverDatabase.updateDriverLocation(driver.driverId, Closest_Node_to_Dropoff)
+
             #We need our comparison for pathing here
             location_path = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             
@@ -224,10 +235,16 @@ def read_map_multi():
             return render_template("map_page_multi.html",  data=data)
         
         else:
+<<<<<<< Updated upstream
             Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location), nodesArray)
             Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location), nodesArray)
             print("The closest Node for passenge 1 pickup is " + str(Closest_Node_to_Pickup))
             print("The closest Node for passenge 1 dropoff is " + str(Closest_Node_to_Dropoff))
+=======
+            Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location))
+            Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location))
+
+>>>>>>> Stashed changes
 
 
             source_location_x = nodesArray[Closest_Node_to_Pickup].latitude
@@ -238,11 +255,16 @@ def read_map_multi():
             end_location_y = nodesArray[Closest_Node_to_Dropoff].longitude
             
             
+<<<<<<< Updated upstream
             additional_Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location_2), nodesArray)
             additional_Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location_2), nodesArray)
             print("The closest Node for passenge 2 pickup is " + str(additional_Closest_Node_to_Pickup))
             print("The closest Node for passenge 2 dropoff is " + str(additional_Closest_Node_to_Dropoff))
             
+=======
+            additional_Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location_2))
+            additional_Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location_2))
+>>>>>>> Stashed changes
             
             additional_source_location_x = nodesArray[additional_Closest_Node_to_Pickup].latitude
             additional_source_location_y = nodesArray[additional_Closest_Node_to_Pickup].longitude
