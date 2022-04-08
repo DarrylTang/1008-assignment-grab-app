@@ -10,10 +10,6 @@ import pickle
 from .nodes import *
 import random
 from .dijkstra import *
-<<<<<<< HEAD
-from .driverdb import *
-=======
->>>>>>> parent of da40c77 (update driver database to class database)
 
 import sqlite3
 from sqlite3 import Error
@@ -226,13 +222,7 @@ def read_map():
     coor = ""
     coor_2 = ""
     
-<<<<<<< HEAD
-    #To pass back into the html Side
-    data = {'startx': 1.43589365, 'starty': 103.8007271}
-    data = {'startx': 1.43589365, 'starty': 103.8007271}
-=======
     data = {} # dictionary
->>>>>>> parent of 7042da4 (Major Patch 1.6.1)
 
     if request.method == 'POST':
         print("executing the POST....")
@@ -305,76 +295,6 @@ def read_map_multi():
     if request.method == 'POST':
         print("executing the POST....")
 
-<<<<<<< HEAD
-
-
-        #Process User INput
-        starting_location = request.form.get('myLocation')
-        ending_location = request.form.get('mydestination')
-        #Clean up the userInput 
-        starting_location = starting_location.strip('\r\n      ')
-        ending_location = ending_location.strip('\r\n      ')
-        starting_location= starting_location.upper()
-        ending_location = ending_location.upper()
-
-        #Process User INput
-        starting_location_additional = request.form.get('myLocation_2')
-        ending_location_additional = request.form.get('mydestination_2')
-        #Clean up the userInput 
-        starting_location_additional = starting_location_additional.strip('\r\n      ')
-        ending_location_additional = ending_location_additional.strip('\r\n      ')
-        starting_location_additional = starting_location_additional.upper()
-        ending_location_additional = ending_location_additional.upper()
-
-        
-        #Checks if the user has inputed a valid location else prompt again
-        if (Check_Valid_User_Input(starting_location)== None or Check_Valid_User_Input(ending_location)== None or Check_Valid_User_Input(starting_location) == Check_Valid_User_Input(ending_location) or Check_Valid_User_Input(starting_location_additional)== None or Check_Valid_User_Input(ending_location_additional)== None or Check_Valid_User_Input(starting_location_additional) == Check_Valid_User_Input(ending_location_additional)):
-            print("Either User_Location Not Found or Similar PICKUP and DROPOFF point Selected, Please enter again :)")
-            return render_template("map_page_multi.html", data=data)
-        
-        else:
-            Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location), nodesArray)
-            Closest_Node_to_Dropoff = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location), nodesArray)
-            
-            source_location_x = nodesArray[Closest_Node_to_Pickup].latitude
-            source_location_y = nodesArray[Closest_Node_to_Pickup].longitude
-            end_location_x = nodesArray[Closest_Node_to_Dropoff].latitude
-            end_location_y = nodesArray[Closest_Node_to_Dropoff].longitude
-            
-            Closest_Node_to_Pickup_for_additional = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location), nodesArray)
-            Closest_Node_to_Dropoff_for_additional = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location), nodesArray)
-            
-            
-            source_location_x_for_additional = nodesArray[Closest_Node_to_Pickup_for_additional].latitude
-            source_location_y_for_additional = nodesArray[Closest_Node_to_Pickup_for_additional].longitude
-            end_location_x_for_additional = nodesArray[Closest_Node_to_Dropoff_for_additional].latitude
-            end_location_y_for_additional = nodesArray[Closest_Node_to_Dropoff_for_additional].longitude
-            
-            
-            
-            #We need our comparison for pathing here
-            location_path = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
-            location_path_speed = speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
-            
-            location_path_additional = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup_for_additional, Closest_Node_to_Dropoff_for_additional)[0]
-            location_path_speed_additional = speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup_for_additional, Closest_Node_to_Dropoff_for_additional)[0]
-            
-             
-            data.update({
-                'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y ,
-                'startx_2': source_location_x_for_additional, 'starty_2': source_location_y_for_additional, 'endx_2': end_location_x_for_additional, 'endy_2': end_location_y_for_additional
-            })
-            #'startx_2': source_location_x_for_additional, 'starty_2': source_location_y_for_additional, 'endx_2': end_location_x_for_additional, 'endy_2': end_location_y_for_additional
-            
-            Coordinate_array = [location_path , location_path_speed , location_path_additional , location_path_speed_additional]
-
-        
-        
-            return render_template("map_page_multi.html", data=data, lineCoord_1 = location_path , lineCoord_2 = location_path_speed , lineCoord_3 = location_path_additional, lineCoord_4 = location_path_speed_additional)        
-            #return render_template("map_page_multi.html", data=data, Coordinate_array = Coordinate_array)
-            #, lineCoord3= location_path_additional , lineCoord4= location_path_speed_additional
-            #lineCoord=location_path , lineCoord2=location_path_speed , lineCoord3= location_path_additional , lineCoord4= location_path_speed_additional
-=======
         # below is what is being typed in from the user.
         starting_location = request.form.get('myLocation')
         ending_location = request.form.get('mydestination')
@@ -469,7 +389,6 @@ def read_map_multi():
                     
                     return render_template("map_page_multi.html", data=data, lineCoord_1=path_A_C , lineCoord_2=path_C_D , lineCoord_3=path_D_B)
 
->>>>>>> parent of 7042da4 (Major Patch 1.6.1)
         # runs on default, GET
         # data here requires default values or it will crash
         
