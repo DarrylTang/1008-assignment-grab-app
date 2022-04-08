@@ -114,11 +114,59 @@ def getNearestDriver(userNode):
     return driverAssigned
 
 
-def additional_UserPickup_Check(userPickup1 , userPickup2):
-    if (speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]):
+def additional_UserPickup_Check(A , B , C , D):
+    
+    
+    AB = speedGraph.dijkstraAlgoGetPath(A , B)[1] / 60
+    AC = speedGraph.dijkstraAlgoGetPath(A , C)[1] / 60
+    
+    CB = speedGraph.dijkstraAlgoGetPath(C , B)[1] / 60
+    CD = speedGraph.dijkstraAlgoGetPath(C , D)[1] / 60
+    
+    BD = speedGraph.dijkstraAlgoGetPath(B , D)[1] / 60
         
+    if ((AB * 2) > AC + CB + BD) or ((AB * 2) > AC + CD + BD):
+        return True
+    else:
+        return False
     
 
+def getGrabsharePath_D(A , B , C , D):
+    
+    AC = distanceGraph.dijkstraAlgoGetPath(A , C)[1] 
+    
+    CB = distanceGraph.dijkstraAlgoGetPath(C , B)[1] 
+    CD = distanceGraph.dijkstraAlgoGetPath(C , D)[1] 
+    
+    BD = distanceGraph.dijkstraAlgoGetPath(B , D)[1] 
+        
+    #comparing shortest distance
+    path1 = AC + CB + BD
+    path2 = AC + CD + BD
+
+    if (path1 <= path2):
+        return 1 
+    else:
+        return 2
+
+def getGrabsharePath_T(A , B , C , D):
+    
+    AC = speedGraph.dijkstraAlgoGetPath(A , C)[1] / 60
+    
+    CB = speedGraph.dijkstraAlgoGetPath(C , B)[1] / 60
+    CD = speedGraph.dijkstraAlgoGetPath(C , D)[1] / 60
+    
+    BD = speedGraph.dijkstraAlgoGetPath(B , D)[1] / 60
+        
+    #comparing shortest time
+    path1 = AC + CB + BD
+    path2 = AC + CD + BD
+
+    if (path1 <= path2):
+        return 1 
+    else:
+        return 2
+        
 
 @map.route('/map_page', methods=['GET', 'POST'])  # add url here
 def read_map():
@@ -262,25 +310,49 @@ def read_map_multi():
             additional_end_location_y = nodesArray[additional_Closest_Node_to_Dropoff].longitude
             
             #We need our comparison for pathing here
+            
+            #A TO B
             location_path = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             location_path_speed = speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             
+            #C TO D
             additional_location_path = distanceGraph.dijkstraAlgoGetPath(additional_Closest_Node_to_Pickup, additional_Closest_Node_to_Dropoff)[0]
             additional_location_path_speed = distanceGraph.dijkstraAlgoGetPath(additional_Closest_Node_to_Pickup, additional_Closest_Node_to_Dropoff)[0]
             
-            data.update({
-                'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y ,
-                'startx_2': additional_source_location_x, 'starty_2': additional_source_location_y , 'endx_2': additional_end_location_x, 'endy_2': additional_end_location_y , 
-            })
-           
             
-            print(data)
-        
-        
-        
-        
+            data.update({
+                        'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y ,
+                        'startx_2': additional_source_location_x, 'starty_2': additional_source_location_y , 'endx_2': additional_end_location_x, 'endy_2': additional_end_location_y , 
+                    })
+            
+            
+            
+            
+            print(additional_UserPickup_Check(Closest_Node_to_Pickup , Closest_Node_to_Dropoff , additional_Closest_Node_to_Pickup , additional_Closest_Node_to_Dropoff))
+            
+            if (additional_UserPickup_Check(Closest_Node_to_Pickup , Closest_Node_to_Dropoff , additional_Closest_Node_to_Pickup , additional_Closest_Node_to_Dropoff) == False):
+                
+                
+                if (getGrabsharePath_D == 1):
                     
-            return render_template("map_page_multi.html", data=data, lineCoord=location_path , lineCoord2=location_path_speed , lineCoord3=additional_location_path ,lineCoord4=additional_location_path_speed)
+                    loc1 = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, additional_Closest_Node_to_Pickup)[0]
+                    loc2 = distanceGraph.dijkstraAlgoGetPath(additional_Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
+                    loc3 = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Dropoff, additional_Closest_Node_to_Dropoff)[0]
+                    
+                    
+                    
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3)
+                else:
+                    loc1 = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, additional_Closest_Node_to_Pickup)[0]
+                    loc2 = distanceGraph.dijkstraAlgoGetPath(additional_Closest_Node_to_Pickup, additional_Closest_Node_to_Dropoff)[0]
+                    loc3 = distanceGraph.dijkstraAlgoGetPath(additional_Closest_Node_to_Dropoff, Closest_Node_to_Dropoff)[0]
+                    
+                
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3)
+            
+            
+            print("It has entered the false zone")
+            return render_template("map_page_multi.html", data=data)
 
         # runs on default, GET
         # data here requires default values or it will crash

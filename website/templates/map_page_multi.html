@@ -115,14 +115,16 @@
       //];
 
 
-      linesData = {{ lineCoord }}
-          
+      linesData_1 = {{ lineCoord1 }}
+      console.log(linesData_1);
       
       linesData_2 = {{ lineCoord2 }}
+      console.log(linesData_2);
 
       linesData_3 = {{ lineCoord3 }}
+      console.log(linesData_3);
 
-      linesData_4 = {{ lineCoord4 }}
+      //linesData_4 = {{ lineCoord4 }}
       
       L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
       L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
@@ -131,35 +133,20 @@
       L.marker([startx_2, starty_2], {title: 'Pickup point_2'}).addTo(mymap);
       L.marker([endx_2, endy_2], {title: 'Dropoff point_2'}).addTo(mymap);
             
-      //L.marker([startx_2, starty_2], {title: 'Pickup point'}).addTo(mymap);
-      //L.marker([endx_2, endy_2], {title: 'Dropoff point'}).addTo(mymap);
       
+      let polyline1 = L.polyline(linesData_1,{className: 'animate'}).setStyle({
+        color: 'blue'
+      }).addTo(mymap);
 
-      function wb_path() {
-        let polyline1 = L.polyline(linesData,{className: 'animate'}).setStyle({
-          color: 'red'
-        }).addTo(mymap);
-  
-      }
-
-      function fatimah_path() {
-        let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
-          color: 'blue'
-        }).addTo(mymap);
-      }
+      let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
+        color: 'blue'
+      }).addTo(mymap);
 
       let polyline3 = L.polyline(linesData_3,{className: 'animate'}).setStyle({
         color: 'blue'
       }).addTo(mymap);
-
-      let polyline4 = L.polyline(linesData_4,{className: 'animate'}).setStyle({
-        color: 'blue'
-      }).addTo(mymap);
-
-      setInterval(fatimah_path, 1000);
-      setInterval(wb_path, 5000);
       
-      
+
     }
 
 
