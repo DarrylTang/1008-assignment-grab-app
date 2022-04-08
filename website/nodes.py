@@ -7,7 +7,7 @@ class Node:
         self.latitude = latitude
         self.longitude = longitude
 
-#read nodes.geojson into array
+#read nodes.geojson and populate doubly linked list
 def getNodesArray():
     filename = "./website/nodes.geojson"
     data = gpd.read_file(filename)
@@ -24,7 +24,7 @@ def getNodesArray():
     return nodesArray
 
 #gets distance between 2 nodes
-#default returns distance in metres
+#default returns distance in km
 def nodesDistance(node1, node2, nodesArray):
     loc1 = (nodesArray[node1].latitude, nodesArray[node1].longitude)
     loc2 = (nodesArray[node2].latitude, nodesArray[node2].longitude)
