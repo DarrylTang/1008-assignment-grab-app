@@ -1,1 +1,0 @@
-// the map javascript is not included in here because map is tied to the individual pages.
