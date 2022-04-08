@@ -12,9 +12,12 @@ import random
 from .dijkstra import *
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 from .driverDb import *
 >>>>>>> parent of 2488034 (add nodes with edges file)
+=======
+>>>>>>> parent of da40c77 (update driver database to class database)
 =======
 >>>>>>> parent of da40c77 (update driver database to class database)
 
@@ -188,6 +191,7 @@ filename = 'dataset_of_addresses'
 datastore = {}
 nodesArray = getNodesArray()
 <<<<<<< HEAD
+<<<<<<< HEAD
 #True if using speed, else if using distance then false
 distanceGraph = Graph(nodesArray)
 distanceGraph.linkAllNodes(False)
@@ -197,6 +201,8 @@ speedGraph.linkAllNodes(True)
 
 if os.path.isfile('dataset_of_addresses'):
 =======
+=======
+>>>>>>> parent of da40c77 (update driver database to class database)
 
 filename = 'dataset_of_postal'
 
@@ -244,6 +250,7 @@ def read_map():
         
         # below is what is being typed in from the user.
 =======
+
 
 
         #Process User INput
@@ -308,9 +315,12 @@ def read_map():
 def read_map_multi():
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     coor = ""
     coor_2 = ""
 =======
+=======
+>>>>>>> parent of da40c77 (update driver database to class database)
     #True if using speed, else if using distance then false
     distanceGraph = Graph(nodesArray)
     distanceGraph.linkAllNodes(False)
