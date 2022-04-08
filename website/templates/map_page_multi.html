@@ -1,0 +1,130 @@
+{% extends "base.html" %} <!-- copy and use the exact same template in base.html -->
+{% block title %}Grab Share{% endblock %}
+
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="input-bar-container multi">
+    <form method="POST" id="routeForm">
+      <div class="row">
+        <label for="myLocation">Book a ride</label>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Pickup location" id="myLocation" name="myLocation">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Destination" id="mydestination" name="mydestination">
+        </div>
+      </div>
+        <div class="spaces"></div>
+        <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Addtional Pickup" id="" name="">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Additional Destination" id="" name="">
+        </div>
+      </div>
+      <div class="spaces"></div>
+      <button type="submit" class="btn btn-primary" onclick="submitted()">Route me!</button>
+    </form>
+  </div>
+
+{% endblock %}
+
+{% block meat %}
+  
+  <div id="map"></div>
+
+  <!-- suggestion output stuff, display in a dropdown -->
+  <!-- <div class="output_for_suggestion"> 
+    {{ x }}
+  </div> -->
+
+  <script>
+    let startx = 0;
+    let starty = 0;
+    let endx = 0;
+    let endy = 0;
+
+    // these code are SUPER IMPORTANT ======
+    // keeps track of session to prevent the icons from being removed
+    window.onload = function() {
+      var reloading = sessionStorage.getItem("reloading");
+      if (reloading) {
+          sessionStorage.removeItem("reloading");
+          loadRoutes();
+      }
+    }
+
+    function submitted() {
+      sessionStorage.setItem("reloading", "true");
+    }
+    /// SUPER IMPORTANT END ========
+
+    // set map view to a specific lat, long in Singapore
+    let mymap = L.map('map').setView([1.43589365, 103.8007271], 16);
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoiZGFycnlsdGFuZyIsImEiOiJjbDB6NzJ3N3QwbXVtM2Rtb3FkNTR5OXp0In0.a1r9nITXtJiS_ys57yp0Gg'
+    }).addTo(mymap);
+
+    // when user clicks on button, then do a wait, and then add the markers and lines to the map
+    function loadRoutes() {
+
+      startx = {{ data.startx }}
+      starty = {{ data.starty }}
+      endx = {{ data.endx }}
+      endy = {{ data.endy }}
+      
+      console.log(startx);
+      console.log(starty);
+      console.log(endx);
+      console.log(endy);
+
+      let latlngs = [
+      [1.43589365, 103.8007271],
+      [1.43565769, 103.8009471],
+      [1.435979454, 103.8012582]
+      ];
+
+      let linesData = {{ lineCoord }}
+          console.log(linesData);
+      
+      let linesData_2 = {{ lineCoord2 }}
+      
+      L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
+      L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
+
+      function wb_path() {
+        let polyline1 = L.polyline(linesData,{className: 'animate'}).setStyle({
+          color: 'red'
+        }).addTo(mymap);
+  
+      }
+
+      function fatimah_path() {
+        let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
+          color: 'blue'
+        }).addTo(mymap);
+      }
+
+      setInterval(fatimah_path, 1000);
+      setInterval(wb_path, 5000);
+      
+    }
+
+
+  
+  </script>
+{% endblock %}
