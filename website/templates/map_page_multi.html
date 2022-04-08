@@ -172,7 +172,83 @@
               setInterval(wb_path_2, 5000);
               
 
+<<<<<<< HEAD
 
+=======
+      // these are variables that was sent from the map.py
+      startx = {{ data.startx }}
+      starty = {{ data.starty }}
+      endx = {{ data.endx }}
+      endy = {{ data.endy }}
+      
+      console.log(startx);
+      console.log(starty);
+      console.log(endx);
+      console.log(endy);
+            
+      //this are the testing
+      startx_new = {{ data.startx_new }}
+      starty_new = {{ data.starty_new }}
+      endx_new = {{ data.endx_new }}
+      endy_new = {{ data.endy_new }}
+      
+      console.log(startx_new);
+      console.log(starty_new);
+      console.log(endx_new);
+      console.log(endy_new);
+
+
+      let latlngs = [
+      [1.43589365, 103.8007271],
+      [1.43565769, 103.8009471],
+      [1.435979454, 103.8012582]
+      ];
+
+      let linesData_1 = {{ lineCoord_1 }}
+          console.log(linesData_1);
+      
+      let linesData_2 = {{ lineCoord_2 }}
+          console.log(linesData_2);
+
+      let linesData_3 = {{ lineCoord_3 }}
+          console.log(linesData_3);
+      
+      
+      L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
+      L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
+      
+      // zoom the map to the polyline
+      // mymap.fitBounds(polyline.getBounds());
+
+      L.marker([startx_new, starty_new], {title: 'Pickup point_new'}).addTo(mymap);
+      L.marker([endx_new, endy_new], {title: 'Dropoff point_new'}).addTo(mymap);
+
+
+      function inner_route1() {
+        L.polyline(linesData_1, {className: 'animate'}).addTo(mymap);
+      }
+
+      function inner_route2() {
+        L.polyline(linesData_2, {className: 'animate'}).addTo(mymap);
+      }
+
+      function inner_route3() {
+        L.polyline(linesData_3, {className: 'animate'}).addTo(mymap);
+      }
+
+      setInterval(inner_route1, 1000);
+      setInterval(inner_route2, 5000);
+      setInterval(inner_route3, 10000);
+
+      //setInterval(let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap),3000);
+      //setInterval(let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap),3000);
+      //setInterval(let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap),3000);
+      //let polyline1 = L.polyline(linesData_1, {className: 'animate'}).addTo(mymap);
+
+      //let polyline2 = L.polyline(linesData_2, {className: 'animate'}).addTo(mymap);
+
+      //let polyline3 = L.polyline(linesData_3, {className: 'animate'}).addTo(mymap);
+>>>>>>> parent of 7042da4 (Major Patch 1.6.1)
     }
 
 
