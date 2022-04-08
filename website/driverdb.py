@@ -7,6 +7,7 @@ class Driver:
         self.driverLocation = driverLocation
         self.carBrand = carBrand
         self.carPlate = carPlate
+        
 class DriverDatabase:
     DRIVER_ID_COL = 0
     DRIVER_NAME_COL = 1
