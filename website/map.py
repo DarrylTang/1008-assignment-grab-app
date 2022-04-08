@@ -209,7 +209,7 @@ def read_map_multi():
 
         #Process User INput
         starting_location_2 = request.form.get('myLocation_2')
-        ending_location_2 = request.form.get('mydestination_@')
+        ending_location_2 = request.form.get('mydestination_2')
         #Clean up the userInput 
         starting_location_2 = starting_location_2.strip('\r\n      ')
         ending_location_2 = ending_location_2.strip('\r\n      ')
@@ -247,7 +247,8 @@ def read_map_multi():
             location_path_speed = speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             
             data.update({
-                'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y
+                'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y ,
+                'startx_2': additional_source_location_x, 'starty_2': additional_source_location_y, 'endx_2': additional_end_location_x, 'endy_2': additional_end_location_y 
             })
 
             print(data)
