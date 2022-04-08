@@ -81,7 +81,6 @@
 
     // when user clicks on button, then do a wait, and then add the markers and lines to the map
     function loadRoutes() {
-
       startx = {{ data.startx }}
       starty = {{ data.starty }}
 
@@ -116,12 +115,14 @@
       //];
 
 
-      let linesData = {{ lineCoord }}
-          console.log(linesData);
+      linesData = {{ lineCoord }}
+          
       
-      let linesData_2 = {{ lineCoord2 }}
+      linesData_2 = {{ lineCoord2 }}
 
-      let linesData_3 = {{ lineCoord3 }}
+      linesData_3 = {{ lineCoord3 }}
+
+      linesData_4 = {{ lineCoord4 }}
       
       L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
       L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
@@ -147,8 +148,17 @@
         }).addTo(mymap);
       }
 
+      let polyline3 = L.polyline(linesData_3,{className: 'animate'}).setStyle({
+        color: 'blue'
+      }).addTo(mymap);
+
+      let polyline4 = L.polyline(linesData_4,{className: 'animate'}).setStyle({
+        color: 'blue'
+      }).addTo(mymap);
+
       setInterval(fatimah_path, 1000);
       setInterval(wb_path, 5000);
+      
       
     }
 

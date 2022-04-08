@@ -101,6 +101,9 @@ def Return_User_to_Node_Matching(userinput, nodesArray):
 
 
 
+
+
+
 @map.route('/map_page', methods=['GET', 'POST'])  # add url here
 def read_map():
     #True if using speed, else if using distance then false
@@ -218,7 +221,7 @@ def read_map_multi():
         #Checks if the user has inputed a valid location else prompt again
         if (Check_Valid_User_Input(starting_location)== None or Check_Valid_User_Input(ending_location)== None or Check_Valid_User_Input(starting_location) == Check_Valid_User_Input(ending_location)):
             print("Either User_Location Not Found or Similar PICKUP and DROPOFF point Selected, Please enter again :)")
-            return render_template("map_page.html", data=data)
+            return render_template("map_page_multi.html",  data=data)
         
         else:
             Closest_Node_to_Pickup = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location), nodesArray)
@@ -251,8 +254,8 @@ def read_map_multi():
             location_path = distanceGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             location_path_speed = speedGraph.dijkstraAlgoGetPath(Closest_Node_to_Pickup, Closest_Node_to_Dropoff)[0]
             
-            
             additional_location_path = distanceGraph.dijkstraAlgoGetPath(additional_Closest_Node_to_Pickup, additional_Closest_Node_to_Dropoff)[0]
+            additional_location_path_speed = distanceGraph.dijkstraAlgoGetPath(additional_Closest_Node_to_Pickup, additional_Closest_Node_to_Dropoff)[0]
             
             data.update({
                 'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y ,
@@ -266,7 +269,7 @@ def read_map_multi():
         
         
                     
-            return render_template("map_page_multi.html", data=data, lineCoord=location_path , lineCoord2=location_path_speed , lineCoord3 = additional_location_path)
+            return render_template("map_page_multi.html", data=data, lineCoord=location_path , lineCoord2=location_path_speed , lineCoord3=additional_location_path ,lineCoord4=additional_location_path_speed)
 
         # runs on default, GET
         # data here requires default values or it will crash
