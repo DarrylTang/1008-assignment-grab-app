@@ -91,8 +91,12 @@ class Graph:
         #pathing coordinates, array of (lat, long) from start to end destination
         pathingCoords = []
 
+        # return sequence of nodes path
+        nodesPath = []
+
         for i in path:
             pathingCoords.append([self.nodesArray[i].latitude, self.nodesArray[i].longitude])
+            nodesPath.append(i)
 
         # cost here refers to either time or distance depending on self.graph
         # two types of graph can be created, nodes with speed or nodes with distance graph
@@ -100,7 +104,7 @@ class Graph:
         # returned value time is in seconds
         totalCost = distanceOrTime[destinationNode]
 
-        return pathingCoords, totalCost
+        return pathingCoords, totalCost, nodesPath
 
     def print(self):
         print(self.graph)

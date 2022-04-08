@@ -12,8 +12,8 @@ class DriverDatabase:
     DRIVER_ID_COL = 0
     DRIVER_NAME_COL = 1
     DRIVER_LOC_COL = 2
-    CAR_BRAND = 3
-    CAR_PLATE = 4
+    CAR_BRAND_COL = 3
+    CAR_PLATE_COL = 4
 
     listOfDrivers = []
 
@@ -58,7 +58,7 @@ class DriverDatabase:
             self.cur.execute("SELECT * FROM driversTable")
             rows = self.cur.fetchall()
             for row in rows:
-                self.listOfDrivers.append(Driver(row[self.DRIVER_ID_COL], row[self.DRIVER_NAME_COL], row[self.DRIVER_LOC_COL], row[self.CAR_BRAND], row[self.CAR_PLATE]))
+                self.listOfDrivers.append(Driver(row[self.DRIVER_ID_COL], row[self.DRIVER_NAME_COL], row[self.DRIVER_LOC_COL], row[self.CAR_BRAND_COL], row[self.CAR_PLATE_COL]))
 
     # inserting a single driver
     def insertDriver(self, driver):
