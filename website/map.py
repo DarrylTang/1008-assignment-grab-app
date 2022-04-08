@@ -244,7 +244,7 @@ def read_map():
     coor = ""
     coor_2 = ""
     
-    data = {'startx': 1.43589365, 'starty': 103.8007271} # dictionary
+    data = {} # dictionary
     
     lineCoord = []
     
@@ -263,10 +263,8 @@ def read_map():
         ending_location = ending_location.upper()
 
         # perform check to prevent code from crashing
-        if starting_location == "":
-            print('Pickup is empty')
-        elif starting_location == "":
-            print('Destination is empty')
+        if starting_location == "" or starting_location == "":
+            print('input is empty')
 
         else:
             coor = findgeocoordinates(starting_location)
@@ -318,18 +316,13 @@ def read_map_multi():
     coor = ""
     coor_2 = ""
 
-    data = {'startx': 1.43589365, 'starty': 103.8007271}  # dictionary
-
-    lineCoord = []
-
-    driver_is_travelling = True
+    data = {}  # dictionary
 
     # folium will render the map onto whatever page directly.
     # map = folium.Map(location=[1.43589365, 103.8007271], zoom_start=16)
 
     if request.method == 'POST':
         print("executing the POST....")
-        driver_is_travelling = False
 
         # below is what is being typed in from the user.
 
@@ -341,113 +334,118 @@ def read_map_multi():
         starting_location = starting_location.upper()
         ending_location = ending_location.upper()
 
-        coor = findgeocoordinates(starting_location)
-        coor_2 = findgeocoordinates(ending_location)
+        # perform check to prevent code from crashing
+        if starting_location == "" or starting_location == "":
+            print('input is empty')
 
-        # sl_x = float(coor[0])
-        # sl_y = float(coor[1])
-        print("Closest index for your starting location is " + str(find_distance(coor, nodesArray)))
+        else:
+            coor = findgeocoordinates(starting_location)
+            coor_2 = findgeocoordinates(ending_location)
 
-        print("Closest index for your ending location is " + str(find_distance(coor_2, nodesArray)))
-        sourceNode = find_distance(coor, nodesArray)
-        destinationNode = find_distance(coor_2, nodesArray)
+            # sl_x = float(coor[0])
+            # sl_y = float(coor[1])
+            print("Closest index for your starting location is " + str(find_distance(coor, nodesArray)))
 
-        # load the driver
-        drivers()
+            print("Closest index for your ending location is " + str(find_distance(coor_2, nodesArray)))
+            sourceNode = find_distance(coor, nodesArray)
+            destinationNode = find_distance(coor_2, nodesArray)
 
-        # pass reference of first node in the list to the graph class
-        graph = Graph(nodesArray)
-        graph.linkAllNodes()
+            # load the driver
+            drivers()
 
-        # sl_x = float(coor[0])
-        # sl_y = float(coor[1])
-        sl_x = nodesArray[sourceNode].latitude
-        sl_y = nodesArray[sourceNode].longitude
+            # pass reference of first node in the list to the graph class
+            graph = Graph(nodesArray)
+            graph.linkAllNodes()
 
-        # folium.Marker(
-        #     location=[sl_x, sl_y],
-        #     popup="<b>Pickup Location</b>",
-        #     tooltip="Click Me!"
-        # ).add_to(map)f
+            # sl_x = float(coor[0])
+            # sl_y = float(coor[1])
+            sl_x = nodesArray[sourceNode].latitude
+            sl_y = nodesArray[sourceNode].longitude
 
-        el_x = nodesArray[destinationNode].latitude
-        el_y = nodesArray[destinationNode].longitude
+            # folium.Marker(
+            #     location=[sl_x, sl_y],
+            #     popup="<b>Pickup Location</b>",
+            #     tooltip="Click Me!"
+            # ).add_to(map)f
 
-        # folium.Marker(
-        #     location=[el_x, el_y],
-        #     popup="<b>Ending destination</b>",
-        #     tooltip="Click Me!"
-        # ).add_to(map)
+            el_x = nodesArray[destinationNode].latitude
+            el_y = nodesArray[destinationNode].longitude
 
-        # Rideshare function
-        passenger_new_pickup = ridesharePassenger_generator()
-        passenger_new_dropoff = ridesharePassenger_generator()
+            # folium.Marker(
+            #     location=[el_x, el_y],
+            #     popup="<b>Ending destination</b>",
+            #     tooltip="Click Me!"
+            # ).add_to(map)
 
-        check = ridesharePassenger_checker(sourceNode, destinationNode, passenger_new_pickup, passenger_new_dropoff,
-                                           nodesArray)
+            # Rideshare function
+            passenger_new_pickup = ridesharePassenger_generator()
+            passenger_new_dropoff = ridesharePassenger_generator()
 
-        print(check)
+            check = ridesharePassenger_checker(sourceNode, destinationNode, passenger_new_pickup, passenger_new_dropoff,
+                                            nodesArray)
 
-        if (check == True):
+            print(check)
 
-            passenger_new_pickup_x = nodesArray[passenger_new_pickup].latitude
-            passenger_new_pickup_y = nodesArray[passenger_new_pickup].longitude
+            if (check == True):
 
-            passenger_new_dropoff_x = nodesArray[passenger_new_dropoff].latitude
-            passenger_new_dropoff_y = nodesArray[passenger_new_dropoff].longitude
+                passenger_new_pickup_x = nodesArray[passenger_new_pickup].latitude
+                passenger_new_pickup_y = nodesArray[passenger_new_pickup].longitude
 
-            # loc is a 2D array of longitude and latitudes for pathing
-            # format: loc = [[sl_x, sl_y], [el_x, el_y]]
+                passenger_new_dropoff_x = nodesArray[passenger_new_dropoff].latitude
+                passenger_new_dropoff_y = nodesArray[passenger_new_dropoff].longitude
 
-            loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)
-            print(loc)
+                # loc is a 2D array of longitude and latitudes for pathing
+                # format: loc = [[sl_x, sl_y], [el_x, el_y]]
 
-            path_picked = rideshareDistance_checker(sourceNode, destinationNode, passenger_new_pickup,
-                                                    passenger_new_dropoff, nodesArray)
+                loc = graph.dijkstraAlgoGetPath(sourceNode, destinationNode)
+                print(loc)
 
-            print(path_picked)
+                path_picked = rideshareDistance_checker(sourceNode, destinationNode, passenger_new_pickup,
+                                                        passenger_new_dropoff, nodesArray)
 
-            if path_picked == 1:
-                path_A_C = graph.dijkstraAlgoGetPath(sourceNode, passenger_new_pickup)
-                path_C_B = graph.dijkstraAlgoGetPath(passenger_new_pickup, destinationNode)
-                path_B_D = graph.dijkstraAlgoGetPath(destinationNode, passenger_new_dropoff)
+                print(path_picked)
 
-                # taking the geo points on produced and sending it to the map in map_page
-                data.update(
-                    {
-                        'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y,
-                        'startx_new': passenger_new_pickup_x, 'starty_new': passenger_new_pickup_y,
-                        'endx_new': passenger_new_dropoff_x, 'endy_new': passenger_new_dropoff_y,
-                        'choice': 1
-                    }
-                )
+                if path_picked == 1:
+                    path_A_C = graph.dijkstraAlgoGetPath(sourceNode, passenger_new_pickup)
+                    path_C_B = graph.dijkstraAlgoGetPath(passenger_new_pickup, destinationNode)
+                    path_B_D = graph.dijkstraAlgoGetPath(destinationNode, passenger_new_dropoff)
 
-                print(data)
+                    # taking the geo points on produced and sending it to the map in map_page
+                    data.update(
+                        {
+                            'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y,
+                            'startx_new': passenger_new_pickup_x, 'starty_new': passenger_new_pickup_y,
+                            'endx_new': passenger_new_dropoff_x, 'endy_new': passenger_new_dropoff_y,
+                            'choice': 1
+                        }
+                    )
 
-                return render_template("map_page_multi.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_B,
-                                       lineCoord_3=path_B_D)
+                    print(data)
 
-            elif path_picked == 2:
-                path_A_C = graph.dijkstraAlgoGetPath(sourceNode, passenger_new_pickup)
-                path_C_D = graph.dijkstraAlgoGetPath(passenger_new_pickup, passenger_new_dropoff)
-                path_D_B = graph.dijkstraAlgoGetPath(passenger_new_dropoff, destinationNode)
+                    return render_template("map_page_multi.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_B,
+                                        lineCoord_3=path_B_D)
 
-                new_loc = path_A_C + path_C_D + path_D_B
+                elif path_picked == 2:
+                    path_A_C = graph.dijkstraAlgoGetPath(sourceNode, passenger_new_pickup)
+                    path_C_D = graph.dijkstraAlgoGetPath(passenger_new_pickup, passenger_new_dropoff)
+                    path_D_B = graph.dijkstraAlgoGetPath(passenger_new_dropoff, destinationNode)
 
-                # taking the geo points on produced and sending it to the map in map_page
-                data.update(
-                    {
-                        'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y,
-                        'startx_new': passenger_new_pickup_x, 'starty_new': passenger_new_pickup_y,
-                        'endx_new': passenger_new_dropoff_x, 'endy_new': passenger_new_dropoff_y,
-                        'choice': 2
-                    }
-                )
+                    new_loc = path_A_C + path_C_D + path_D_B
 
-                print(data)
+                    # taking the geo points on produced and sending it to the map in map_page
+                    data.update(
+                        {
+                            'startx': sl_x, 'starty': sl_y, 'endx': el_x, 'endy': el_y,
+                            'startx_new': passenger_new_pickup_x, 'starty_new': passenger_new_pickup_y,
+                            'endx_new': passenger_new_dropoff_x, 'endy_new': passenger_new_dropoff_y,
+                            'choice': 2
+                        }
+                    )
 
-                return render_template("map_page_multi.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_D,
-                                       lineCoord_3=path_D_B)
+                    print(data)
+
+                    return render_template("map_page_multi.html", data=data, lineCoord_1=path_A_C, lineCoord_2=path_C_D,
+                                        lineCoord_3=path_D_B)
 
         # runs on default, GET
         # data here requires default values or it will crash
