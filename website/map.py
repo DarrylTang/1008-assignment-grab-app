@@ -199,18 +199,13 @@ def read_map():
             B = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location))
 
             driver = getNearestDriver(A)
-            print("MY NEAREST DRIVER IS: " + str(driver.driverName))
             
             source_location_x = nodesArray[A].latitude
             source_location_y = nodesArray[A].longitude
 
-            print("updating driver loc to go to user loc to pickup")
-            driverDatabase.updateDriverLocation(driver.driverId, A)
-
             end_location_x = nodesArray[B].latitude
             end_location_y = nodesArray[B].longitude
             
-            print("updating driver loc to go to destination location to drop off")
             driverDatabase.updateDriverLocation(driver.driverId, B)
 
             #We need our comparison for pathing here
@@ -284,12 +279,14 @@ def read_map_multi():
             A = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location))
             B = Return_User_to_Node_Matching(Check_Valid_User_Input(ending_location))
 
-
+            #driver pick up passenger at point A
+            driver = getNearestDriver(A)
+            print(driver.driverName)
 
             source_location_x = nodesArray[A].latitude
             source_location_y = nodesArray[A].longitude
             
-            
+
             end_location_x = nodesArray[B].latitude
             end_location_y = nodesArray[B].longitude
             
@@ -309,7 +306,7 @@ def read_map_multi():
             CB = distanceGraph.dijkstraAlgoGetPath(C , B)
             CD = distanceGraph.dijkstraAlgoGetPath(C , D)
             BD = distanceGraph.dijkstraAlgoGetPath(B , D)
-            
+            DB = distanceGraph.dijkstraAlgoGetPath(D , B)
             
             
             #A TO B
@@ -331,26 +328,31 @@ def read_map_multi():
             
             print(additional_UserPickup_Check(A , B , C , D))
             
+            #if false, don't pick up 2nd passenger
+            #if true, pick up passenger
             if (additional_UserPickup_Check(A , B , C , D) == False):
-                
-                
                 if (getGrabsharePath_D(AC , CB , CD , BD) == 1):
                     
                     loc1 = AC[0]
                     loc2 = CB[0]
                     loc3 = BD[0]
+
+                    #A -> C -> B -> D
+                    driverDatabase.updateDriverLocation(driver.driverId, D)
                     
                     return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3)
                 else:
                     loc1 = AC[0]
                     loc2 = CD[0]
-                    loc3 = BD[0]
+                    loc3 = DB[0]
                     
+                    #A -> C -> D -> B
+                    driverDatabase.updateDriverLocation(driver.driverId, B)
                 
                     return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3)
-            
-            
-            
+            else:
+                # A -> B path only
+                driverDatabase.updateDriverLocation(driver.driverId, B)
             
             print("It has entered the false zone")
             return render_template("map_page_multi.html", data=data)
