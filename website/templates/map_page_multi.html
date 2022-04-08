@@ -94,8 +94,11 @@
 
       startx_2 = {{ data.startx_2 }}
       starty_2 = {{ data.starty_2 }}
-      endx_2 = {{ data.endx_2 }}
-      endy_2 = {{ data.endy_2 }}
+      console.log(startx_2);
+      console.log(starty_2);
+      L.marker([startx_2, starty_2], {title: 'Pickup point'}).addTo(mymap);
+      //endx_2 = {{ data.endx_2 }}
+      //endy_2 = {{ data.endy_2 }}
 
       let latlngs = [
       [1.43589365, 103.8007271],
@@ -110,8 +113,8 @@
       
       L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
       L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
-      L.marker([startx_2, starty_2], {title: 'Pickup point'}).addTo(mymap);
-      L.marker([endx_2, endy_2], {title: 'Dropoff point'}).addTo(mymap);
+      //L.marker([startx_2, starty_2], {title: 'Pickup point'}).addTo(mymap);
+      //L.marker([endx_2, endy_2], {title: 'Dropoff point'}).addTo(mymap);
 
 
       function wb_path() {

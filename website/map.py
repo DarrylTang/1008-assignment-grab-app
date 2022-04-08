@@ -248,9 +248,10 @@ def read_map_multi():
             
             data.update({
                 'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y ,
-                'startx_2': additional_source_location_x, 'starty_2': additional_source_location_y, 'endx_2': additional_end_location_x, 'endy_2': additional_end_location_y 
+                'startx_2': source_location_x, 'starty_2': source_location_y,
             })
-
+            #'startx_2': source_location_x, 'starty_2': source_location_y, 'endx_2': additional_end_location_x, 'endy_2': additional_end_location_y 
+            
             print(data)
         
         
