@@ -11,9 +11,12 @@ from .nodes import *
 import random
 from .dijkstra import *
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 from .driverDb import *
 >>>>>>> parent of 2488034 (add nodes with edges file)
+=======
+>>>>>>> parent of da40c77 (update driver database to class database)
 
 import sqlite3
 from sqlite3 import Error
@@ -184,6 +187,7 @@ def drivers():
 filename = 'dataset_of_addresses'
 datastore = {}
 nodesArray = getNodesArray()
+<<<<<<< HEAD
 #True if using speed, else if using distance then false
 distanceGraph = Graph(nodesArray)
 distanceGraph.linkAllNodes(False)
@@ -192,6 +196,12 @@ speedGraph = Graph(nodesArray)
 speedGraph.linkAllNodes(True)
 
 if os.path.isfile('dataset_of_addresses'):
+=======
+
+filename = 'dataset_of_postal'
+
+if os.path.isfile('dataset_of_postal'):
+>>>>>>> parent of da40c77 (update driver database to class database)
     print ("File exist")
     infile = open(filename,'rb')
     datastore = pickle.load(infile)
@@ -230,8 +240,14 @@ def read_map():
 
     if request.method == 'POST':
         print("executing the POST....")
+<<<<<<< HEAD
         
         # below is what is being typed in from the user.
+=======
+
+
+        #Process User INput
+>>>>>>> parent of da40c77 (update driver database to class database)
         starting_location = request.form.get('myLocation')
         ending_location = request.form.get('mydestination')
 
@@ -291,8 +307,21 @@ def read_map():
 @map.route('/map_page_multi', methods=['GET', 'POST'])  # add url here
 def read_map_multi():
 
+<<<<<<< HEAD
     coor = ""
     coor_2 = ""
+=======
+    #True if using speed, else if using distance then false
+    distanceGraph = Graph(nodesArray)
+    distanceGraph.linkAllNodes(False)
+
+    speedGraph = Graph(nodesArray)
+    speedGraph.linkAllNodes(True)
+    
+    
+    #To pass back into the html Side
+    data = {'startx': 1.43589365, 'starty': 103.8007271}
+>>>>>>> parent of da40c77 (update driver database to class database)
 
     data = {}  # dictionary
 
