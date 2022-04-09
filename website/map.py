@@ -142,18 +142,11 @@ def getGrabsharePath_D(AC , CB , CD , BD):
     else:
         return 2
 
-def getGrabsharePath_T(A , B , C , D):
+def getGrabsharePath_T(AC , CB , CD , BD):
     
-    AC = speedGraph.dijkstraAlgoGetPath(A , C)[1] / 60
-    
-    CB = speedGraph.dijkstraAlgoGetPath(C , B)[1] / 60
-    CD = speedGraph.dijkstraAlgoGetPath(C , D)[1] / 60
-    
-    BD = speedGraph.dijkstraAlgoGetPath(B , D)[1] / 60
-        
     #comparing shortest time
-    path1 = AC + CB + BD
-    path2 = AC + CD + BD
+    path1 = AC[1]/60 + CB[1] / 60 + BD[1] / 60
+    path2 = AC[1] / 60 + CD[1] / 60 + BD[1] / 60
 
     if (path1 <= path2):
         return 1 
@@ -210,21 +203,8 @@ def read_map():
 
             #We need our comparison for pathing here
             location_path = distanceGraph.dijkstraAlgoGetPath(A, B)[0]
-            
-            #nodesNum = distanceGraph.dijkstraAlgoGetPath(A, B)[2]
-            """print("DISTANCE PATH")
-            print(location_path)
-            print(nodesNum)
-            """
 
             location_path_speed = speedGraph.dijkstraAlgoGetPath(A, B)[0]
-            
-            #nodesNo = speedGraph.dijkstraAlgoGetPath(A, B)[2]    
-                   
-            """print("SPEEDY PATH")
-            print(location_path_speed)
-            print(nodesNo)
-            """
             data.update({
                 'startx': source_location_x, 'starty': source_location_y, 'endx': end_location_x, 'endy':end_location_y
             })
@@ -308,14 +288,11 @@ def read_map_multi():
             BD = distanceGraph.dijkstraAlgoGetPath(B , D)
             DB = distanceGraph.dijkstraAlgoGetPath(D , B)
             
-            
-            #A TO B
-            location_path = distanceGraph.dijkstraAlgoGetPath(A, B)[0]
-            location_path_speed = speedGraph.dijkstraAlgoGetPath(A, B)[0]
-            
-            #C TO D
-            additional_location_path = distanceGraph.dijkstraAlgoGetPath(C, D)[0]
-            additional_location_path_speed = distanceGraph.dijkstraAlgoGetPath(C, D)[0]
+            AC_s = speedGraph.dijkstraAlgoGetPath(A , C)
+            CB_s = speedGraph.dijkstraAlgoGetPath(C , B)
+            CD_s = speedGraph.dijkstraAlgoGetPath(C , D)
+            BD_s = speedGraph.dijkstraAlgoGetPath(B , D)
+            DB_s = speedGraph.dijkstraAlgoGetPath(D , B)
             
             
             data.update({
@@ -331,25 +308,68 @@ def read_map_multi():
             #if false, don't pick up 2nd passenger
             #if true, pick up passenger
             if (additional_UserPickup_Check(A , B , C , D) == False):
-                if (getGrabsharePath_D(AC , CB , CD , BD) == 1):
+                if (getGrabsharePath_D(AC , CB , CD , BD) == 1 and getGrabsharePath_T(AC_s , CB_s , CD_s , BD_s) == 1):
                     
+                    #A -> C -> B -> D
                     loc1 = AC[0]
                     loc2 = CB[0]
                     loc3 = BD[0]
 
-                    #A -> C -> B -> D
+                    loc4 = AC_s[0]
+                    loc5 = CB_s[0]
+                    loc6 = BD_s[0]
+                    
+                    
                     driverDatabase.updateDriverLocation(driver.driverId, D)
                     
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6)
+                
+                elif (getGrabsharePath_D(AC , CB , CD , BD) == 1 and getGrabsharePath_T(AC_s , CB_s , CD_s , BD_s) == 2):
+                    
+                    #A -> C -> B -> D
+                    loc1 = AC[0]
+                    loc2 = CB[0]
+                    loc3 = BD[0]
+
+                    loc4 = AC_s[0]
+                    loc5 = CD_s[0]
+                    loc6 = DB_s[0]
+                    
+                    
+                    driverDatabase.updateDriverLocation(driver.driverId, D)
+                    
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6)
+                
+                elif (getGrabsharePath_D(AC , CB , CD , BD) == 2 and getGrabsharePath_T(AC_s , CB_s , CD_s , BD_s) == 1):
+                    
+                    #A -> C -> B -> D
+                    loc1 = AC[0]
+                    loc2 = CD[0]
+                    loc3 = DB[0]
+
+                    loc4 = AC_s[0]
+                    loc5 = CB_s[0]
+                    loc6 = BD_s[0]
+                    
+                    
+                    
+                    driverDatabase.updateDriverLocation(driver.driverId, D)
+                    
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6)
+                
                 else:
                     loc1 = AC[0]
                     loc2 = CD[0]
                     loc3 = DB[0]
                     
+                    loc4 = AC_s[0]
+                    loc5 = CD_s[0]
+                    loc6 = DB_s[0]
+                    
                     #A -> C -> D -> B
                     driverDatabase.updateDriverLocation(driver.driverId, B)
                 
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6)
             else:
                 # A -> B path only
                 driverDatabase.updateDriverLocation(driver.driverId, B)

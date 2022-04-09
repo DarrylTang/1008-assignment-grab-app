@@ -124,6 +124,15 @@
       linesData_3 = {{ lineCoord3 }}
       console.log(linesData_3);
 
+      linesData_4 = {{ lineCoord4 }}
+      console.log(linesData_1);
+      
+      linesData_5 = {{ lineCoord5 }}
+      console.log(linesData_2);
+
+      linesData_6 = {{ lineCoord6 }}
+      console.log(linesData_3);
+
       //linesData_4 = {{ lineCoord4 }}
       
       L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
@@ -160,11 +169,33 @@
         }).addTo(mymap);
       }
 
+      function inner_route4() {
+        let polyline4 = L.polyline(linesData_4,{className: 'animate'}).setStyle({
+          color: 'black'
+        }).addTo(mymap);
+
+      }
+
+      function inner_route5() {
+        let polyline5 = L.polyline(linesData_5,{className: 'animate'}).setStyle({
+          color: 'black'
+        }).addTo(mymap);
+
+      }
+
+      function inner_route6() {
+        
+        let polyline6 = L.polyline(linesData_6,{className: 'animate'}).setStyle({
+          color: 'black'
+        }).addTo(mymap);
+      }
+
       setInterval(inner_route1, 1000);
       setInterval(inner_route2, 5000);
       setInterval(inner_route3, 7000);
-
-
+      setInterval(inner_route4, 10000);
+      setInterval(inner_route5, 12000);
+      setInterval(inner_route6, 15000);
 
     }
 
