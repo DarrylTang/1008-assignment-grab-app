@@ -1,3 +1,5 @@
+#The following are the imports we used throughout the project
+
 from asyncio.windows_events import NULL
 from lib2to3.pgen2 import driver
 from flask import Blueprint, render_template, request
@@ -15,26 +17,21 @@ from .driverdb import *
 
 import sqlite3
 from sqlite3 import Error
-
 from time import time, sleep
 
 # this defines the file as our blueprint
 map = Blueprint('map', __name__)  # easier to name it the same as ur file
 
-
-
 #This runs the oneMap Api to retrive addresses data
 def OneMapAPI_data_retreive(address):
     req = requests.get('https://developers.onemap.sg/commonapi/search?searchVal='+address+'&returnGeom=Y&getAddrDetails=Y&pageNum=1')
-    resultsdict = eval(req.text)
-    
-    return resultsdict
+    resultsdict = eval(req.text)   #Stores the extracted data in a tuple
+    return resultsdict  #Returns the result
 
 #Building the referencing dataset(excel) to build dataset
-
-new_dict_data_all = ""
-datastore = {}
-nodesArray = getNodesArray()
+new_dict_data_all = ""  #Declaring a null variable first
+datastore = {}  #Declaring an empty dictionary
+nodesArray = getNodesArray()  #Calling our predefined nodes
 
 #True if using speed, else if using distance then false
 distanceGraph = Graph(nodesArray)
@@ -48,22 +45,23 @@ driverDatabase = DriverDatabase()
 
 filename = 'dataset_of_postal'
 
-if os.path.isfile('dataset_of_postal'):
+if os.path.isfile('dataset_of_postal'):  #Checks if the file exist in the directory
+    
     print ("File exist")
     infile = open(filename,'rb')
-    new_dict_data_all = pickle.load(infile)
+    new_dict_data_all = pickle.load(infile)   #Loads the files
     infile.close()
     
-    
 else:
-    print ("File not exist")
+    print ("File not exist") #If the file doesnt exist we need to create it
 
     df = pd.read_csv("hdb-property-information.csv")
-    df['Address'] = df['blk_no'] + " " + df['street']
-    addresslist = list(df['Address'])[:12472]
+    df['Address'] = df['blk_no'] + " " + df['street'] 
+    addresslist = list(df['Address'])[:12472]   
     postal = []   
-    for i in addresslist:
-        postal.append(OneMapAPI_data_retreive(i))
+    
+    for i in addresslist:         
+        postal.append(OneMapAPI_data_retreive(i)) #We run the addresses through oneAPI to generate the data such as address, street name and postal code
     for k in range(len(addresslist)):
         datastore[k] = postal[k]
     outfile = open(filename,'wb')
@@ -71,7 +69,7 @@ else:
     pickle.dump(datastore,outfile)
     outfile.close()
 
-
+# This functions check if the userinput is valid and retrieve the lat and long base on either address, roadname or postal code
 def Check_Valid_User_Input(User_Input):
     for i in range(len(new_dict_data_all)):
         if (bool(new_dict_data_all[i]['results']) == False or bool(new_dict_data_all[i]) == False):
@@ -80,31 +78,25 @@ def Check_Valid_User_Input(User_Input):
             if User_Input in new_dict_data_all[i]['results'][0]['ADDRESS'] or User_Input in new_dict_data_all[i]['results'][0]['ROAD_NAME'] or User_Input in new_dict_data_all[i]['results'][0]['POSTAL']:
                 return new_dict_data_all[i]['results'][0]['LATITUDE'], new_dict_data_all[i]['results'][0]['LONGITUDE']
 
-
+# Compares the address and return the nearest node base on distance
 def Return_User_to_Node_Matching(userinput):
     minimum_dist = minimum = sys.maxsize
-
     user_location = (float(userinput[0]) , float(userinput[1]))
-        
     for i in range(0,len(nodesArray)):
         location = (nodesArray[i].latitude, nodesArray[i].longitude)
-        
         distance = haversine(user_location, location, unit=Unit.METERS)
-
         if distance< minimum_dist:
             minimum_dist = distance
             minimum = i
-            
     return minimum
 
+# Compares the user's location and return the nearest driver base on distance
 def getNearestDriver(userNode):
     minimum_dist = sys.maxsize
     user_location = (nodesArray[userNode].latitude, nodesArray[userNode].longitude)
-
     #go through each driver in database
     for driver in driverDatabase.listOfDrivers:
         driver_location = (nodesArray[driver.driverLocation].latitude, nodesArray[driver.driverLocation].longitude)
-        
         distance = haversine(user_location, driver_location, unit=Unit.METERS)
 
         if distance < minimum_dist:
@@ -116,14 +108,10 @@ def getNearestDriver(userNode):
 
 def additional_UserPickup_Check(A , B , C , D):
     
-    
     AB = speedGraph.dijkstraAlgoGetPath(A , B)[1] / 60
-    
     AC = speedGraph.dijkstraAlgoGetPath(A , C)[1] / 60
-    
     CB = speedGraph.dijkstraAlgoGetPath(C , B)[1] / 60
     CD = speedGraph.dijkstraAlgoGetPath(C , D)[1] / 60
-    
     BD = speedGraph.dijkstraAlgoGetPath(B , D)[1] / 60
         
     if ((AB * 2) > AC + CB + BD) or ((AB * 2) > AC + CD + BD):
@@ -131,7 +119,6 @@ def additional_UserPickup_Check(A , B , C , D):
     else:
         return False
     
-
 def getGrabsharePath_D(AC , CB , CD , BD):
     #comparing shortest distance
     path1 = AC[1] + CB[1] + BD[1]
