@@ -1,0 +1,23 @@
+{% extends "base.html" %} <!-- copy and use the exact same template in base.html -->
+{% block title %}Driver Details{% endblock %}
+
+{% block content %}
+    {% for driver in drivers %}
+    <div class="spaces"></div>
+    <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Driver Name:{{ driver.driverName }}</h5>
+                        <p class="card-text">Driver ID: {{ driver.driverId }}</p>
+                        <p class="card-text">Driver Node Location: {{ driver.driverLocation }}</p>
+                        <p class="card-text">Driver Rating: {{ driver.driverRatings }}</p>
+                        <p class="card-text">Car Brand: {{ driver.carBrand }}</p>
+                        <p class="card-text">Car Plate: {{ driver.carPlate }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="spaces"></div>
+    {% endfor %}
+{% endblock %}

@@ -366,19 +366,16 @@ def read_map_multi():
         # data here requires default values or it will crash
     return render_template("map_page_multi.html", data=data)
   
-@map.route('/driver_detail', methods=['GET', 'POST'])
+@map.route('/drivers_detail')
+def driver_detail(): 
+    return render_template("drivers_detail.html", drivers=driverDatabase.listOfDrivers)
+
+@map.route('/driver_detail_by_id')
 def review2(): 
-    return render_template("driver_detail.html", drivers=driverDatabase.listOfDrivers)
+    sortedArray = driverDatabase.listOfDrivers
 
-# @map.route('/driver_detail_by_id')
-# def review2(): 
-#     sortedArray = driverDatabase.listOfDrivers
-
-#     #sort by driverId in ascending order
-#     #lambda returns true/false if one object's id is greater than the other
-#     quickSort(sortedArray, 0, len(sortedArray)-1, lambda x, y: x.driverId > y.driverId)
-
-#     for d in sortedArray:
-#         print(d.driverName)  
-
-#     #return render_template("driver_detail.html", rows=newRows)
+    #sort by driverId in ascending order
+    #lambda returns true/false if one object's id is greater than the other
+    quickSort(sortedArray, 0, len(sortedArray)-1, lambda x, y: x.driverId > y.driverId)
+    
+    return render_template("driver_detail.html", drivers=sortedArray)
