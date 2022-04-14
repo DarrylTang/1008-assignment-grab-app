@@ -307,7 +307,7 @@ def read_map_multi():
                     
                     driverDatabase.updateDriverLocation(driver.driverId, D)
                     
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = value_button)
                 
                 elif (getGrabsharePath_D(AC , CB , CD , BD) == 1 and getGrabsharePath_T(AC_s , CB_s , CD_s , BD_s) == 2):
                     
@@ -323,7 +323,7 @@ def read_map_multi():
                     
                     driverDatabase.updateDriverLocation(driver.driverId, D)
                     
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = value_button)
                 
                 elif (getGrabsharePath_D(AC , CB , CD , BD) == 2 and getGrabsharePath_T(AC_s , CB_s , CD_s , BD_s) == 1):
                     
@@ -340,7 +340,7 @@ def read_map_multi():
                     
                     driverDatabase.updateDriverLocation(driver.driverId, D)
                     
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = value_button)
                 
                 else:
                     loc1 = AC[0]
@@ -354,7 +354,7 @@ def read_map_multi():
                     #A -> C -> D -> B
                     driverDatabase.updateDriverLocation(driver.driverId, B)
                 
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = value_button)
             else:
                 # A -> B path only
                 driverDatabase.updateDriverLocation(driver.driverId, B)
