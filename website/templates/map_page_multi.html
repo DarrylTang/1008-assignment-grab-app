@@ -46,7 +46,7 @@
       <div class="form-row">
 
         <div class="center">
-          <input type="checkbox" id="check" name="check" value="Checked_success"/>
+          <input type="checkbox" id="check" name="check" value= "1" />
         </div>
 
       </div>
@@ -101,6 +101,10 @@
 
     // when user clicks on button, then do a wait, and then add the markers and lines to the map
     function loadRoutes() {
+
+      choice = {{ choice }}
+      console.log(choice);
+
       startx = {{ data.startx }}
       starty = {{ data.starty }}
 
@@ -143,7 +147,6 @@
       linesData_6 = {{ lineCoord6 }}
       console.log(linesData_3);
 
-      //linesData_4 = {{ lineCoord4 }}
       
       L.marker([startx, starty], {title: 'Pickup point'}).addTo(mymap);
       L.marker([endx, endy], {title: 'Dropoff point'}).addTo(mymap);
@@ -174,10 +177,7 @@
       }
 
       
-      setInterval(inner_route1, 100);
-      setInterval(inner_route2, 5000);
-      setInterval(inner_route3, 7000);
-
+      
 
 
       function inner_route4() {
@@ -205,10 +205,20 @@
 
 
 
-      setInterval(inner_route4, 10000);
-      setInterval(inner_route5, 12000);
-      setInterval(inner_route6, 15000);
+      if (choice == 1) {
+        setInterval(inner_route1, 100);
+        setInterval(inner_route2, 5000);
+        setInterval(inner_route3, 7000);
 
+      }
+      else{
+        setInterval(inner_route4, 10000);
+        setInterval(inner_route5, 12000);
+        setInterval(inner_route6, 15000);
+
+      }
+
+      
     }
 
 

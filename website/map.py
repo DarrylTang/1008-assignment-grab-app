@@ -206,7 +206,8 @@ def read_map_multi():
 
     #To pass back into the html Side
     data = {'startx': 1.43589365, 'starty': 103.8007271}
-
+    
+    
     if request.method == 'POST':
         print("executing the POST....")
 
@@ -234,11 +235,16 @@ def read_map_multi():
 
         value_button = request.form.get('check')
         print(value_button)
+        if value_button == "1":
+            choice = 1
+        elif value_button == None:
+            choice = 0
+        
 
         #Checks if the user has inputed a valid location else prompt again
         if (Check_Valid_User_Input(starting_location)== None or Check_Valid_User_Input(ending_location)== None or Check_Valid_User_Input(starting_location) == Check_Valid_User_Input(ending_location)):
             print("Either User_Location Not Found or Similar PICKUP and DROPOFF point Selected, Please enter again :)")
-            return render_template("map_page_multi.html",  data=data)
+            return render_template("map_page_multi.html",  data=data ,choice = choice)
         
         else:
             A = Return_User_to_Node_Matching(Check_Valid_User_Input(starting_location))
@@ -307,7 +313,7 @@ def read_map_multi():
                     
                     driverDatabase.updateDriverLocation(driver.driverId, D)
                     
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = value_button)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = choice)
                 
                 elif (getGrabsharePath_D(AC , CB , CD , BD) == 1 and getGrabsharePath_T(AC_s , CB_s , CD_s , BD_s) == 2):
                     
@@ -323,7 +329,7 @@ def read_map_multi():
                     
                     driverDatabase.updateDriverLocation(driver.driverId, D)
                     
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = value_button)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = choice)
                 
                 elif (getGrabsharePath_D(AC , CB , CD , BD) == 2 and getGrabsharePath_T(AC_s , CB_s , CD_s , BD_s) == 1):
                     
@@ -340,7 +346,7 @@ def read_map_multi():
                     
                     driverDatabase.updateDriverLocation(driver.driverId, D)
                     
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = value_button)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = choice)
                 
                 else:
                     loc1 = AC[0]
@@ -354,13 +360,13 @@ def read_map_multi():
                     #A -> C -> D -> B
                     driverDatabase.updateDriverLocation(driver.driverId, B)
                 
-                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = value_button)
+                    return render_template("map_page_multi.html", data=data, lineCoord1=loc1 , lineCoord2=loc2 , lineCoord3=loc3 , lineCoord4=loc4 , lineCoord5=loc5 , lineCoord6=loc6 , choice = choice)
             else:
                 # A -> B path only
                 driverDatabase.updateDriverLocation(driver.driverId, B)
             
             print("It has entered the false zone")
-            return render_template("map_page_multi.html", data=data)
+            return render_template("map_page_multi.html", data=data , choice = choice)
 
         # runs on default, GET
         # data here requires default values or it will crash
