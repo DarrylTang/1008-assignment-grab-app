@@ -185,6 +185,8 @@ def read_map():
             end_location_x = nodesArray[B].latitude
             end_location_y = nodesArray[B].longitude
             
+            
+            #Check user choice in path if 1 optimal path else fastest path
             value_button = request.form.get('check')
             print(value_button)
             
@@ -243,6 +245,7 @@ def read_map_multi():
         starting_location_2= starting_location_2.upper()
         ending_location_2 = ending_location_2.upper()
 
+        #Check user choice in path if 1 optimal path else fastest path
         value_button = request.form.get('check')
         print(value_button)
         if value_button == "1":
