@@ -370,12 +370,22 @@ def read_map_multi():
 def driver_detail(): 
     return render_template("drivers_detail.html", drivers=driverDatabase.listOfDrivers)
 
-@map.route('/driver_detail_by_id')
-def review2(): 
+@map.route('/drivers_detail_by_id')
+def drivers_detail_by_id(): 
     sortedArray = driverDatabase.listOfDrivers
 
     #sort by driverId in ascending order
     #lambda returns true/false if one object's id is greater than the other
     quickSort(sortedArray, 0, len(sortedArray)-1, lambda x, y: x.driverId > y.driverId)
     
-    return render_template("driver_detail.html", drivers=sortedArray)
+    return render_template("drivers_detail.html", drivers=sortedArray)
+
+@map.route('/drivers_detail_by_ratings')
+def drivers_detail_by_ratings(): 
+    sortedArray = driverDatabase.listOfDrivers
+
+    #sort by driverId in ascending order
+    #lambda returns true/false if one object's ratings is greater than the other
+    quickSort(sortedArray, 0, len(sortedArray)-1, lambda x, y: x.driverRatings > y.driverRatings)
+    
+    return render_template("drivers_detail.html", drivers=sortedArray)
