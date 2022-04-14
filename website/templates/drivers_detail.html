@@ -2,13 +2,18 @@
 {% block title %}Driver Details{% endblock %}
 
 {% block content %}
+<div class="spaces"></div>
+
+<a class="btn btn-primary" href="/drivers_detail_by_id" role="button">ID Sort</a>
+<a class="btn btn-light" href="/drivers_detail_by_ratings" role="button">Ratings Sort</a>
+
     {% for driver in drivers %}
     <div class="spaces"></div>
     <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">Driver Name:{{ driver.driverName }}</h5>
+                        <h5 class="card-title">Driver Name: {{ driver.driverName }}</h5>
                         <p class="card-text">Driver ID: {{ driver.driverId }}</p>
                         <p class="card-text">Driver Node Location: {{ driver.driverLocation }}</p>
                         <p class="card-text">Driver Rating: {{ driver.driverRatings }}</p>
@@ -18,11 +23,5 @@
                 </div>
             </div>
         </div>
-    <div class="spaces"></div>
-
-    
     {% endfor %}
-    <a class="btn btn-primary" href="/drivers_detail_by_id" role="button">ID Sort</a>
-    <a class="btn btn-light" href="/drivers_detail_by_ratings" role="button">Ratings Sort</a>
-
 {% endblock %}

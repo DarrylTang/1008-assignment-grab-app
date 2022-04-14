@@ -14,7 +14,7 @@ from .nodes import *
 import random
 from .dijkstra import *
 from .driverdb import *
-from .quickSort import *
+from .quicksort import *
 
 import sqlite3
 from sqlite3 import Error
@@ -365,11 +365,13 @@ def read_map_multi():
         # runs on default, GET
         # data here requires default values or it will crash
     return render_template("map_page_multi.html", data=data)
-  
+
+#display all drivers details
 @map.route('/drivers_detail')
 def driver_detail(): 
     return render_template("drivers_detail.html", drivers=driverDatabase.listOfDrivers)
 
+#display driver details based on id
 @map.route('/drivers_detail_by_id')
 def drivers_detail_by_id(): 
     sortedArray = driverDatabase.listOfDrivers
@@ -380,6 +382,7 @@ def drivers_detail_by_id():
     
     return render_template("drivers_detail.html", drivers=sortedArray)
 
+#display driver details based on ratings
 @map.route('/drivers_detail_by_ratings')
 def drivers_detail_by_ratings(): 
     sortedArray = driverDatabase.listOfDrivers
