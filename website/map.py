@@ -232,6 +232,8 @@ def read_map_multi():
         starting_location_2= starting_location_2.upper()
         ending_location_2 = ending_location_2.upper()
 
+        value_button = request.form.get('check')
+        print(value_button)
 
         #Checks if the user has inputed a valid location else prompt again
         if (Check_Valid_User_Input(starting_location)== None or Check_Valid_User_Input(ending_location)== None or Check_Valid_User_Input(starting_location) == Check_Valid_User_Input(ending_location)):
