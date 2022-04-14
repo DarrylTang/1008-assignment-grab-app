@@ -13,7 +13,7 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("home.html")
 
-
+#view drivers details
 @views.route('/review')
 def review1():
     # amended for reviews
