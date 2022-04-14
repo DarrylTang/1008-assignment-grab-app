@@ -159,20 +159,17 @@
 
       function inner_route1() {
         let polyline1 = L.polyline(linesData_1,{className: 'animate'}).setStyle({
-          color: 'lightblue',
-          opacity: 2
+          color: 'lightblue'
         }).addTo(mymap);
       }
       function inner_route2() {
         let polyline2 = L.polyline(linesData_2,{className: 'animate'}).setStyle({
-          color: 'lightblue',
-          opacity: 2
+          color: 'lightgreen'
         }).addTo(mymap);
       }
       function inner_route3() {
         let polyline3 = L.polyline(linesData_3,{className: 'animate'}).setStyle({
-          color: 'lightblue',
-          opacity: 2
+          color: 'yellow'
         }).addTo(mymap);
       }
 
@@ -182,39 +179,39 @@
 
       function inner_route4() {
         let polyline4 = L.polyline(linesData_4,{className: 'animate'}).setStyle({
-          color: 'black',
-          weight : 5
+          color: 'lightblue',
+          weight : 3
         }).addTo(mymap);
 
       }
 
       function inner_route5() {
         let polyline5 = L.polyline(linesData_5,{className: 'animate'}).setStyle({
-          color: 'black',
-          weight : 5
+          color: 'lightblue',
+          weight : 3
         }).addTo(mymap);
 
       }
 
       function inner_route6() {
         let polyline6 = L.polyline(linesData_6,{className: 'animate'}).setStyle({
-          color: 'black',
-          weight : 5
+          color: 'lightblue',
+          weight : 3
         }).addTo(mymap);
       }
 
 
 
       if (choice == 1) {
-        setInterval(inner_route1, 100);
+        setInterval(inner_route1, 1000);
         setInterval(inner_route2, 5000);
         setInterval(inner_route3, 7000);
 
       }
       else{
-        setInterval(inner_route4, 10000);
-        setInterval(inner_route5, 12000);
-        setInterval(inner_route6, 15000);
+        setInterval(inner_route4, 1000);
+        setInterval(inner_route5, 7000);
+        setInterval(inner_route6, 12000);
 
       }
 

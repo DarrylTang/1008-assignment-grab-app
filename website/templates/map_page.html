@@ -9,22 +9,42 @@
 {% block content %}
 
   <div class="input-bar-container">
+
     <form method="POST" id="routeForm">
+
       <div class="row">
         <label for="myLocation">Book a ride</label>
       </div>
+
       <div class="form-row">
+
         <div class="col">
           <input type="text" class="form-control" placeholder="Pickup location" id="myLocation" name="myLocation">
         </div>
+
         <div class="col">
+
           <input type="text" class="form-control" placeholder="Destination" id="mydestination" name="mydestination" aria-describedby="warningBlock">
             <div id="warningBlock" class="form-text">
               Please input a location in postal code!
             </div>
+
         </div>
+
+        <div class="col">
+
+          <div class="center">
+            <input type="checkbox" id="check" name="check" value= "1" />
+          </div>
+
+        </div>
+
       </div>
+
       <div class="spaces"></div>
+
+
+
       <button type="submit" class="btn btn-primary" onclick="submitted()">Route me!</button>
     </form>
   </div>
@@ -96,6 +116,11 @@
       console.log(endx);
       console.log(endy);
 
+
+      choice = {{ choice }}
+      console.log(choice);
+
+
       let latlngs = [
       [1.43589365, 103.8007271],
       [1.43565769, 103.8009471],
@@ -123,8 +148,16 @@
         }).addTo(mymap);
       }
 
-      setInterval(fatimah_path, 1000);
-      setInterval(wb_path, 5000);
+
+      if (choice == 1) {
+        setInterval(wb_path, 1000);
+      }
+      else{
+        setInterval(fatimah_path, 1000);
+      }
+
+
+      
       
 
     }

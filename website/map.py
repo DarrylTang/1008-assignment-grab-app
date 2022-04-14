@@ -185,6 +185,16 @@ def read_map():
             end_location_x = nodesArray[B].latitude
             end_location_y = nodesArray[B].longitude
             
+            value_button = request.form.get('check')
+            print(value_button)
+            
+            if value_button == "1":
+                choice = 1
+            elif value_button == None:
+                choice = 0
+        
+            
+            
             driverDatabase.updateDriverLocation(driver.driverId, B)
 
             #We need our comparison for pathing here
@@ -197,7 +207,7 @@ def read_map():
 
             print(data)
             
-            return render_template("map_page.html", data=data, lineCoord=location_path , lineCoord2=location_path_speed)
+            return render_template("map_page.html", data=data, lineCoord=location_path , lineCoord2=location_path_speed , choice = choice)
     return render_template("map_page.html", data=data)
 
 # the grabshare portion
