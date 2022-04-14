@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    {% for row in rows %}
+    {% for driver in drivers %}
     <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
 {#                <div class="col-md-4">#}
@@ -11,12 +11,12 @@
 {#                </div>#}
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">Driver Name:{{ row["driverName"] }}</h5>
-                        <p class="card-text">Driver Id: {{ row["driverId"] }}</p>
-                        <p class="card-text">Car Plate: {{ row["carPlate"] }}</p>
-                        <p class="card-text">Car Type: {{ row["carType"] }}</p>
-                        <p class="card-text">Stationed Location: {{ row["driverLoc"] }}</p>
-                        <p class="card-text">Driver Rating: {{ row["driverRate"] }}</p>
+                        <h5 class="card-title">Driver Name:{{ driver.driverName }}</h5>
+                        <p class="card-text">Driver Id: {{ driver.driverId }}</p>
+                        <p class="card-text">Car Plate: {{ driver.carPlate }}</p>
+                        <p class="card-text">Car Brand: {{ driver.carBrand }}</p>
+                        <p class="card-text">Stationed Location: {{ driver.driverLocation }}</p>
+                        <p class="card-text">Driver Rating: {{ driver.driverRatings }}</p>
                         <button type="button" class="btn btn-primary">Book a ride</button>
                     </div>
                 </div>
@@ -34,14 +34,14 @@
 {#        <td>Driver Ratings</td>#}
 {#        </thead>#}
 {##}
-{#        {% for row in rows %}#}
+{#        {% for driver in drivers %}#}
 {#            <tr>#}
-{#                <td>{{ row["driverId"] }}</td>#}
-{#                <td>{{ row["driverName"] }}</td>#}
-{#                <td>{{ row["carPlate"] }}</td>#}
-{#                <td>{{ row["carType"] }}</td>#}
-{#                <td>{{ row["driverLoc"] }}</td>#}
-{#                <td>{{ row["driverRate"] }}</td>#}
+{#                <td>{{ driver.driverId }}</td>#}
+{#                <td>{{ driver.driverName }}</td>#}
+{#                <td>{{ driver.carPlate }}</td>#}
+{#                <td>{{ driver.carBrand }}</td>#}
+{#                <td>{{ driver.driverLocation }}</td>#}
+{#                <td>{{ driver.driverRatings }}</td>#}
 {#            </tr>#}
 {#        {% endfor %}#}
 {#    </table>#}
