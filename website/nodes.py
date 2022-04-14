@@ -1,6 +1,5 @@
 import geopandas as gpd
 from haversine import haversine, Unit
-
 class Node:
     def __init__(self, nodeNum, latitude, longitude):
         self.nodeNum = nodeNum

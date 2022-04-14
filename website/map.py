@@ -1,7 +1,3 @@
-#The following are the imports we used throughout the project
-
-from asyncio.windows_events import NULL
-from lib2to3.pgen2 import driver
 from flask import Blueprint, render_template, request
 import pandas as pd
 import requests
@@ -11,14 +7,9 @@ import haversine
 import os
 import pickle
 from .nodes import *
-import random
 from .dijkstra import *
 from .driverdb import *
 from .quicksort import *
-
-import sqlite3
-from sqlite3 import Error
-from time import time, sleep
 
 # this defines the file as our blueprint
 map = Blueprint('map', __name__)  # easier to name it the same as ur file
@@ -108,7 +99,6 @@ def getNearestDriver(userNode):
 
 
 def additional_UserPickup_Check(A , B , C , D):
-    
     AB = speedGraph.dijkstraAlgoGetPath(A , B)[1] / 60
     AC = speedGraph.dijkstraAlgoGetPath(A , C)[1] / 60
     CB = speedGraph.dijkstraAlgoGetPath(C , B)[1] / 60

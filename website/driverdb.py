@@ -8,7 +8,6 @@ class Driver:
         self.driverRatings = driverRatings
         self.carBrand = carBrand
         self.carPlate = carPlate
-        
 class DriverDatabase:
     DRIVER_ID_COL = 0
     DRIVER_NAME_COL = 1
